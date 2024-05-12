@@ -1,0 +1,720 @@
+1:
+  a) 128
+    1000 0000b
+  b) 4096
+    0001 0000 0000 0000b
+  c) 256
+    0001 0000 0000b
+  d) 65536
+    0001 0000 0000 0000 0000b
+  e) 254
+    1111 1110b
+  f) 9
+    1001b
+  g) 1024
+    0100 0000 0000b
+  h) 15
+    1111b
+  i) 344
+    0001 0101 1000b
+  j) 998
+    0011 1110 0110b
+  k) 255
+    1111 1111b
+  l) 512
+    0010 0000 0000b
+  m) 1023
+    0011 1111 1111b
+  n) 2048
+    1000 0000 0000b
+  o) 4095
+    1111 1111 1111b
+  p) 8192
+    0010 0000 0000 0000b
+  q) 16384
+    0100 0000 0000 0000b
+  r) 32768
+    1000 0000 0000 0000b
+  s) 6334
+    0001 1000 1011 1110b
+  t) 12334
+    0011 0000 0010 1110b
+  u) 23465
+    0101 1011 1010 1001b
+  v) 5643
+    0001 0110 0000 1011b
+  w) 464
+    0001 1101 0000b
+  x) 64
+    0100 0011b
+  y) 888
+    0011 0111 1000b
+
+2:
+  a) 1001 1001
+    153
+  b) 1001 1101
+    157
+  c) 1100 0011
+    195
+  d) 0000 1001
+    9
+  e) 1111 1111
+    255
+  f) 0000 1111
+    15
+  g) 0111 1111
+    127
+  h) 1010 0101
+    165
+  i) 0100 0101
+    69
+  j) 0101 1010
+    90
+  k) 1111 0000
+    240
+  l) 1011 1101
+    189
+  m) 1100 0010
+    194
+  n) 0111 1110
+    126
+  o) 1110 1111
+    239
+  p) 0001 1000
+    24
+  q) 1001 1111
+    159
+  r) 0100 0010
+    66
+  s) 1101 1100
+    220
+  t) 1111 0001
+    241
+  u) 0110 1001
+    105
+  v) 0101 1011
+    91
+  w) 1011 1001
+    185
+  x) 1110 0110
+    230
+  y) 1001 0111
+    151
+
+3:
+  a) 99h
+  b) 9Dh
+  c) C3h
+  d) 09h
+  e) FFh
+  f) 0Fh
+  g) 7Fh
+  h) A5h
+  i) 45h
+  j) 5Ah
+  k) F0h
+  l) BDh
+  m) C2h
+  n) 7Eh
+  o) EFh
+  p) 18h
+  q) 9Fh
+  r) 42h
+  s) DAh
+  t) F1h
+  u) 69h
+  v) 5Bh
+  w) B9h
+  x) E6h
+  y) 97h
+
+4:
+  a) 0ABCD
+    0000 1010 1011 1100 1101
+  b) 1024
+    0001 0000 0010 0100
+  c) 0DEAD
+    0000 1101 1110 1010 1101
+  d) 0ADD
+    0000 1010 1101 1101
+  e) 0BEEF
+    0000 1011 1110 1110 1111
+  f) 8
+    1000
+  g) 05AAF
+    0000 0101 1010 1010 1111
+  h) 0FFFF
+    0000 1111 1111 1111 1111
+  i) 0ACDB
+    0000 1010 1100 1101 1011
+  j) 0CDBA
+    0000 1100 1101 1011 1010
+  k) 0FEBA
+    0000 1111 1110 1011 1010
+  l) 35
+    0011 0101
+  m) 0BA
+    0000 1011 1010
+  n) 0ABA
+    0000 1010 1011 1010
+  o) 0BAD
+    0000 1011 1010 1101
+  p) 0DAB
+    0000 1101 1010 1011
+  q) 4321
+    0100 0011 0010 0001
+  r) 334
+    0011 0011 0100
+  s) 45
+    0100 0101
+  t) 0E65
+    0000 1110 0110 0101
+  u) 0BEAD
+    0000 1011 1110 1010 1101
+  v) 0ABE
+    0000 1010 1011 1110
+  w) 0DEAF
+    0000 1101 1110 1010 1111
+  x) 0DAD
+    0000 1101 1010 1101
+  y) 9876
+    1001 1000 0111 0110
+
+5:
+  1234 + 9876 = AAAA
+
+6: 
+  0FFF - 0F34 = 00CB
+
+7:
+  100 - 1 = 0FF
+
+8:
+  0FFE - 1 = 0FFD
+
+9: What is the importance of a nibble?
+  Representing hex digits and BCD digits
+
+10: How many hex digits in:
+  a) byte:
+    2
+  b) word:
+    4
+  c) double word
+    8
+
+11: How many bits in
+  a) nibble:
+    4
+  b) byte:
+    8
+  c) word:
+    16
+  d) d word
+    32
+
+12: Which bit number is HO bit in:
+  a) nibble:
+    3rd
+  b) byte:
+    7th
+  c) word:
+    15th
+  d) d word
+    31st
+
+13: What character do we use as a suffix for:
+  a) Binary:
+    b
+  b) Hex:
+    h
+  c) decimal
+    none or t or d
+
+14: assuming 16 bit 2's complement which numbers in q4 are positive and negative
+  positive: b, f, g, l, m, n, o, p, q, r, s, t, v, x
+  negative: a, c, d, e, h, i, j, k, u, w, y
+
+15: SEXT all values in q2 to 16 bits in hex:
+  a) FF99
+  b) FF9D
+  c) FFC3
+  d) 0009
+  e) FFFF
+  f) 000F
+  g) 007F
+  h) FFA5
+  i) 0045
+  j) 005A
+  k) FFF0
+  l) FFBD
+  m) FFC2
+  n) 007E
+  o) FFEF
+  p) 0018
+  q) FF9F
+  r) 0042
+  s) FFDC
+  t) FFF1
+  u) 0069
+  v) 005B
+  w) FFB9
+  x) FFE6
+  y) FF97
+
+16: Perform bitwise AND operations on the following pairs of hex values.
+  a) 0FF00, 0FF0
+    val1: 0000 1111 1111 0000 0000
+    val2: 0000 0000 1111 1111 0000
+    res:  0000 0000 1111 0000 0000
+    hex:  00F00
+  b) 0F00F, 1234
+    val1: 0000 1111 0000 0000 1111
+    val2: 0000 0001 0010 0011 0100
+    res:  0000 0001 0000 0000 0100
+    hex:  01004
+  c) 4321, 1234
+    val1: 0100 0011 0010 0001
+    val2: 0001 0010 0011 0100
+    res:  0000 0010 0010 0000
+    hex:  0220
+  d) 2341, 3241
+    val1: 0010 0011 0100 0001
+    val2: 0011 0010 0100 0001
+    res:  0010 0010 0100 0001
+    hes:  2241
+  e) 0FFFF, 0EDCB
+    val1: 0000 1111 1111 1111 1111
+    val2: 0000 1110 1101 1100 1011
+    res:  0000 1110 1101 1100 1011
+    hex:  0EDCB
+  f) 1111, 5789
+    val1: 0001 0001 0001 0001
+    val2: 0101 0111 1000 1001
+    res:  0001 0001 0000 0001
+    hex:  1101
+  g) 0FABA, 4322
+    val1: 0000 1111 1010 1011 1010
+    val2: 0000 0100 0011 0010 0010
+    res:  0000 0100 0010 0010 0010
+    hex:  04222
+  h) 5523, 0F572
+    val1: 0000 0101 0101 0010 0011
+    val2: 0000 1111 0101 0111 0010
+    res:  0000 0101 0101 0010 0010
+    hex:  05522
+  i) 2355, 7466
+    val1: 0010 0011 0101 0101
+    val2: 0111 0100 0110 0110
+    res:  0010 0000 0100 0100
+    hex:  2044
+  j) 4765, 6543
+    val1: 0100 0111 0110 0101
+    val2: 0110 0101 0100 0011
+    res:  0100 0101 0100 0001
+    hex:  4541
+  k) 0ABCD, 0EFDC
+    val1: 0000 1010 1011 1100 1101
+    val2: 0000 1110 1111 1101 1100
+    res:  0000 1010 1011 1100 1100
+    hex:  0ABCC
+  l) 0DDDD, 1234
+    val1: 0000 1101 1101 1101 1101
+    val2: 0000 0001 0010 0011 0100
+    res:  0000 0001 0000 0001 0100
+    hex:  01014
+  m) 0CCCC, 0ABCD
+    val1: 0000 1100 1100 1100 1100
+    val2: 0000 1010 1011 1100 1101
+    res:  0000 1000 1000 1100 1100
+    hex:  088CC
+  n) 0BBBB, 1234
+    val1: 0000 1011 1011 1011 1011
+    val2: 0000 0001 0010 0011 0100
+    res:  0000 0001 0010 0011 0000
+    hex:  01230
+  o) 0AAAA, 1234
+    val1: 0000 1010 1010 1010 1010
+    val2: 0000 0001 0010 0011 0100
+    res:  0000 0000 0010 0010 0000
+    hex:  00220
+  p) 0EEEE, 1248
+    val1: 0000 1110 1110 1110 1110
+    val2: 0000 0001 0010 0100 1000
+    res:  0000 0000 0010 0100 1000
+    hex:  00248
+  q) 8888, 1248
+    val1: 1000 1000 1000 1000
+    val2: 0001 0010 0100 1000
+    res:  0000 0000 0000 1000
+    hex: 0008
+  r) 8086, 124F
+    val1: 1000 0000 1000 0110
+    val2: 0001 0010 0100 1111
+    res:  0000 0000 0000 0110
+    hex:  0006
+  s) 8086, 0CFA7
+    val1: 0000 1000 0000 1000 0110
+    val2: 0000 1100 1111 1010 0111
+    res:  0000 1000 0000 1000 0110
+    hex:  08086
+  t) 8765, 3456
+    val1: 1000 0111 0110 0101
+    val2: 0011 0100 0101 0110
+    res:  0000 0100 0100 0100
+    hex:  0444
+  u) 7089, 0FEDC
+    val1: 0111 0000 1000 1001
+    val2: 1111 1110 1101 1100
+    res:  0111 0000 1000 1000
+    hex:  7088
+  v) 2435, 0BCDE
+    val1: 0010 0100 0011 0101
+    val2: 1011 1100 1101 1110
+    res:  0010 0100 0001 0100
+    hex:  2414
+  w) 6355, 0EFDC
+    val1: 0110 0011 0101 0101
+    val2: 1110 1111 1101 1100
+    res:  0110 0011 0101 0100
+    hex:  6354
+  x) 0CBA, 6884
+    val1: 0000 1100 1011 1010
+    val2: 0110 1000 1000 0100
+    res:  0000 1000 1000 0000
+    hex:  0880
+  y) 0AC7, 365
+    val1: 0000 1010 1100 0111
+    val2: 0000 0011 0110 0101
+    res:  0000 0010 0100 0101
+    hex:  0245
+
+17: Perform bitwise OR operations on the following pairs of hex values.
+  a) 0FF00, 0FF0
+    val1: 0000 1111 1111 0000 0000
+    val2: 0000 0000 1111 1111 0000
+    res:  0000 1111 1111 1111 0000
+    hex:  0FFF0
+  b) 0F00F, 1234
+    val1: 0000 1111 0000 0000 1111
+    val2: 0000 0001 0010 0011 0100
+    res:  0000 1111 0010 0011 1111
+    hex:  0F23F
+  c) 4321, 1234
+    val1: 0100 0011 0010 0001
+    val2: 0001 0010 0011 0100
+    res:  0101 0011 0011 0101
+    hex:  5335
+  d) 2341, 3241
+    val1: 0010 0011 0100 0001
+    val2: 0011 0010 0100 0001
+    res:  0011 0011 0100 0001
+    hes:  3341
+  e) 0FFFF, 0EDCB
+    val1: 0000 1111 1111 1111 1111
+    val2: 0000 1110 1101 1100 1011
+    res:  0000 1111 1111 1111 1111
+    hex:  0FFFF
+  f) 1111, 5789
+    val1: 0001 0001 0001 0001
+    val2: 0101 0111 1000 1001
+    res:  0101 0111 1001 1001
+    hex:  5799
+  g) 0FABA, 4322
+    val1: 0000 1111 1010 1011 1010
+    val2: 0000 0100 0011 0010 0010
+    res:  0000 1111 1011 1011 1010
+    hex:  0FBBA
+  h) 5523, 0F572
+    val1: 0000 0101 0101 0010 0011
+    val2: 0000 1111 0101 0111 0010
+    res:  0000 1111 0101 0111 0011
+    hex:  0F573
+  i) 2355, 7466
+    val1: 0010 0011 0101 0101
+    val2: 0111 0100 0110 0110
+    res:  0111 0111 0111 0111
+    hex:  7777
+  j) 4765, 6543
+    val1: 0100 0111 0110 0101
+    val2: 0110 0101 0100 0011
+    res:  0110 0111 0110 0111
+    hex:  6767
+  k) 0ABCD, 0EFDC
+    val1: 0000 1010 1011 1100 1101
+    val2: 0000 1110 1111 1101 1100
+    res:  0000 1110 1111 1101 1101
+    hex:  0EFDD
+  l) 0DDDD, 1234
+    val1: 0000 1101 1101 1101 1101
+    val2: 0000 0001 0010 0011 0100
+    res:  0000 1101 1111 1111 1101
+    hex:  0DFFD
+  m) 0CCCC, 0ABCD
+    val1: 0000 1100 1100 1100 1100
+    val2: 0000 1010 1011 1100 1101
+    res:  0000 1110 1111 1100 1101
+    hex:  0EFCD
+  n) 0BBBB, 1234
+    val1: 0000 1011 1011 1011 1011
+    val2: 0000 0001 0010 0011 0100
+    res:  0000 1011 1011 1011 1111
+    hex:  0BBBF
+  o) 0AAAA, 1234
+    val1: 0000 1010 1010 1010 1010
+    val2: 0000 0001 0010 0011 0100
+    res:  0000 1011 1010 1011 1110
+    hex:  0BABE
+  p) 0EEEE, 1248
+    val1: 0000 1110 1110 1110 1110
+    val2: 0000 0001 0010 0100 1000
+    res:  0000 1111 1110 1110 1110
+    hex:  0FEEE
+  q) 8888, 1248
+    val1: 1000 1000 1000 1000
+    val2: 0001 0010 0100 1000
+    res:  1001 1010 1100 1000
+    hex: 9AC8
+  r) 8086, 124F
+    val1: 1000 0000 1000 0110
+    val2: 0001 0010 0100 1111
+    res:  1001 0010 1100 1111
+    hex:  92CF
+  s) 8086, 0CFA7
+    val1: 0000 1000 0000 1000 0110
+    val2: 0000 1100 1111 1010 0111
+    res:  0000 1100 1111 1010 0111
+    hex:  0CFA7
+  t) 8765, 3456
+    val1: 1000 0111 0110 0101
+    val2: 0011 0100 0101 0110
+    res:  1011 0111 0111 0111
+    hex:  B777
+  u) 7089, 0FEDC
+    val1: 0111 0000 1000 1001
+    val2: 1111 1110 1101 1100
+    res:  1111 1110 1101 1101
+    hex:  FEDD
+  v) 2435, 0BCDE
+    val1: 0010 0100 0011 0101
+    val2: 1011 1100 1101 1110
+    res:  1011 1100 1111 1111
+    hex:  BCFF
+  w) 6355, 0EFDC
+    val1: 0110 0011 0101 0101
+    val2: 1110 1111 1101 1100
+    res:  1110 1111 1101 1101
+    hex:  EFDD
+  x) 0CBA, 6884
+    val1: 0000 1100 1011 1010
+    val2: 0110 1000 1000 0100
+    res:  0110 1100 1011 1110
+    hex:  6CBE
+  y) 0AC7, 365
+    val1: 0000 1010 1100 0111
+    val2: 0000 0011 0110 0101
+    res:  0000 1011 1110 0111
+    hex:  0BE7
+
+18: Perform bitwise XOR operations on the following pairs of hex values.
+  a) 0FF00, 0FF0
+    val1: 0000 1111 1111 0000 0000
+    val2: 0000 0000 1111 1111 0000
+    res:  0000 1111 0000 1111 0000
+    hex:  0F0F0
+  b) 0F00F, 1234
+    val1: 0000 1111 0000 0000 1111
+    val2: 0000 0001 0010 0011 0100
+    res:  0000 1110 0010 0011 1011
+    hex:  0E23B
+  c) 4321, 1234
+    val1: 0100 0011 0010 0001
+    val2: 0001 0010 0011 0100
+    res:  0101 0001 0001 0101
+    hex:  5115
+  d) 2341, 3241
+    val1: 0010 0011 0100 0001
+    val2: 0011 0010 0100 0001
+    res:  0001 0001 0000 0000
+    hes:  1100
+  e) 0FFFF, 0EDCB
+    val1: 0000 1111 1111 1111 1111
+    val2: 0000 1110 1101 1100 1011
+    res:  0000 0001 0010 0011 0100
+    hex:  01234
+  f) 1111, 5789
+    val1: 0001 0001 0001 0001
+    val2: 0101 0111 1000 1001
+    res:  0100 0110 1001 1000
+    hex:  4698
+  g) 0FABA, 4322
+    val1: 0000 1111 1010 1011 1010
+    val2: 0000 0100 0011 0010 0010
+    res:  0000 1011 1001 1001 1000
+    hex:  0B998
+  h) 5523, 0F572
+    val1: 0000 0101 0101 0010 0011
+    val2: 0000 1111 0101 0111 0010
+    res:  0000 1010 0000 0101 0001
+    hex:  0A051
+  i) 2355, 7466
+    val1: 0010 0011 0101 0101
+    val2: 0111 0100 0110 0110
+    res:  0101 0111 0011 0011
+    hex:  5733
+  j) 4765, 6543
+    val1: 0100 0111 0110 0101
+    val2: 0110 0101 0100 0011
+    res:  0010 0010 0010 0110
+    hex:  2226
+  k) 0ABCD, 0EFDC
+    val1: 0000 1010 1011 1100 1101
+    val2: 0000 1110 1111 1101 1100
+    res:  0000 0100 0100 0001 0001
+    hex:  04411
+  l) 0DDDD, 1234
+    val1: 0000 1101 1101 1101 1101
+    val2: 0000 0001 0010 0011 0100
+    res:  0000 1100 1111 1110 1001
+    hex:  0CFE9
+  m) 0CCCC, 0ABCD
+    val1: 0000 1100 1100 1100 1100
+    val2: 0000 1010 1011 1100 1101
+    res:  0000 0110 0111 0000 0001
+    hex:  06701
+  n) 0BBBB, 1234
+    val1: 0000 1011 1011 1011 1011
+    val2: 0000 0001 0010 0011 0100
+    res:  0000 1010 1001 1000 1111
+    hex:  0A98F
+  o) 0AAAA, 1234
+    val1: 0000 1010 1010 1010 1010
+    val2: 0000 0001 0010 0011 0100
+    res:  0000 1011 1000 1001 1110
+    hex:  0B89E
+  p) 0EEEE, 1248
+    val1: 0000 1110 1110 1110 1110
+    val2: 0000 0001 0010 0100 1000
+    res:  0000 1111 1100 1010 0110
+    hex:  0FCA6
+  q) 8888, 1248
+    val1: 1000 1000 1000 1000
+    val2: 0001 0010 0100 1000
+    res:  1001 1010 1100 0000
+    hex: 9AC0
+  r) 8086, 124F
+    val1: 1000 0000 1000 0110
+    val2: 0001 0010 0100 1111
+    res:  1001 0010 1100 1001
+    hex:  92C9
+  s) 8086, 0CFA7
+    val1: 0000 1000 0000 1000 0110
+    val2: 0000 1100 1111 1010 0111
+    res:  0000 0100 1111 0010 0001
+    hex:  04F21
+  t) 8765, 3456
+    val1: 1000 0111 0110 0101
+    val2: 0011 0100 0101 0110
+    res:  1011 0011 0011 0011
+    hex:  B333
+  u) 7089, 0FEDC
+    val1: 0111 0000 1000 1001
+    val2: 1111 1110 1101 1100
+    res:  1000 1110 0101 0101
+    hex:  8E55
+  v) 2435, 0BCDE
+    val1: 0010 0100 0011 0101
+    val2: 1011 1100 1101 1110
+    res:  1001 1000 1110 1011
+    hex:  98EB
+  w) 6355, 0EFDC
+    val1: 0110 0011 0101 0101
+    val2: 1110 1111 1101 1100
+    res:  1000 1100 1000 1001
+    hex:  8C89
+  x) 0CBA, 6884
+    val1: 0000 1100 1011 1010
+    val2: 0110 1000 1000 0100
+    res:  0110 0100 0011 1110
+    hex:  643E
+  y) 0AC7, 365
+    val1: 0000 1010 1100 0111
+    val2: 0000 0011 0110 0101
+    res:  0000 1001 1010 0011
+    hex:  09A3
+
+19: Perform bitwise NOT operation on the following values assuming all are 16 bits
+
+20: Perform two's complement to values in q4. Assume all are 16 bits
+
+21: Sign extend the following hex values from 8 to 16 bits. Present answers in hex
+
+22: Sign contract the following values from 16 to 8 bits. If cannot be donw explain why
+
+23: Sign extend the 16 bit values in q22 to 32 bits
+
+24: Assume values in q22 are 16 bit, perform left shift on them
+
+25: Assume values in q22 are 16 bit, perform right shift on them
+
+26: Rotate left on q22
+
+27: Rotate right on q22
+
+28: Convert the following dates to the packed data format explained in this chapter, Give ans in hex
+  a) 01/01/92
+    data: 0001 0.0001 101.1100
+    bin:  0001 0000 1101 1100
+    hex:  10DCh
+  b) 02/04/56
+    data: 0010 0.0100 011.1000
+    bin:  0010 0010 0011 1000
+    hex:  2238h
+  c) 06/19/60
+    data: 0110 1.0011 011.1100
+    bin:  0110 1001 1011 1100
+    hex:  69BCh
+  d) 06/16/86
+    data: 0110 1.0000 101.0110
+    bin:  0110 1000 0101 0110
+    hex:  6856h
+  e) 01/01/99
+    data: 0001 0.0001 110.0011
+    bin:  0001 0000 1110 0011
+    hex:  10E3h
+
+29: Describe how to use logical ops to extract day field from packed date in q28, i.e. end up with a 16 bit int in range 0..31
+  1) AND the 16 bit date data with 0000 1111 1000 0000
+  2) SHIFT the RES right 7 times
+
+30: Suppose you have a value in range 0..9. Explain how to convert to ASCII char using basic logical ops
+  OR the value with 0011 0000
+
+31: Explaining how the first set bit finder code in C++ works:
+  1) First we shift our mask to the first index that we want to start checking from
+  2) Then we get into a loop if mask is non zero
+  3) At each iteration we AND the mask and the BitMap
+    3a) If the result is zero we shift the mask left once and move on
+    3b) If the resul is non zero we have found a '1' in the BitMap at the current location of the set bit in our mask, which is stored in the var start, so we return the var start which represents the index of the bit
+  4) If we iterate for longer than the bitwise length of our mask variable, the left shift would have overflown the set bit, thus Mask would be zero, so we'd exit the loop, signifying that we have not found any bits set to one in the BitMap, thus we return -1.
+
+32: C++ does not specify how many bits are in an insigned int. So why it works regardless of number of bits
+  It works because the size of the BitMap and the mask are the same. If we ever overflow the Mask by left shifting, we automatically know that the correspoding bit index would be out of bounds for the BitMap that we are testing as well, since they are of the same type. It doesn't matter what machine we are on, what OS we are on, what chipset we are on, as long as bot BitMap and the Mask are of the same type
+
+33: Explain how the complement to the C++ function above works. Explain how it finds the first 0 bit.
+  It just calls FindFirstSet by inverting or NOT'ing the BitMap. When the BitMap is inverted, all th e0's would become 1's and vice versa, thus the first 0 bit in the original BitMap would be the first 1 bit in it's inverse, thus we can just call the existingn FindFirstSet fn and we'd retreive the correct bit index as a result.
+
+34: Explain how the SetBit and ClrBit fns provided work.
+  a) SetBit receives the original BitMap and a parameter called position, OR's the BitMap with a mask bit that is shifted left 'position' amount of times. Returns the result. Since the BitMap is OR'ed with a mask with one bit at index 'position', the bit at index 'position' of the returned BitMap would be 1 regardless of its original value in the original BitMap
+  b) ClrBit receives the original BitMap and a parameter called 'position', creates a mask by left shifting a 1 position times and taking the inverse of the whole mask, essemtialy yielding a mask of 0 at index 'position' surrounded by all 1s. Then the original BitMap is AND'ed with this value. Thus, in the returned BitMap, all of the original bit values of the BitMap are present, except for the bit at index 'position'. Bit at index 'position' is AND'ed with a 0 thus whatever its original value was, the result would be 0, guaranteeing that the bit is cleared.
+
+35: In the code appearing in qs 31-34, explain what happens if the start and position params contain a value greater than or equal to the number of bits in an unsigned int.
+  a) q31
+    For the piece of code that finds the first set bit, we would not see that big of a change in the outcome of the code, since if the bit in the mask went out of bounds we would just return -1, signalling that no set bit was found, it would however take longer to do the same operation and would probably 0 extend the BitMap to the size of the start variable in order to be able to process the AND in the if statement, but that would still yield a 0 since it is a 0 ext. At the end, start still has finite amount of bits and it would work, it would make unnecessary comparison of course
+  b) q33
+     The same can be said for the complement of the code in q31
+  c) q34
+    For SetBit, if position is larger than the BitMap, the BitMap would be zero extended to the size of Position, then the op would be done, but since the return type is unsigned int, we would return the re-truncated BitMap.. it would be as if nothing happened.
+  d) q34
+    For ClrBit same can be said as for SetBit

@@ -1,0 +1,32 @@
+Sign and Zero extending numbers from 8 bit to 16 bit
+
+I assume that zero extension would extend with 0s regardles of the HO bit of the 8bit value, So all of the expected results below are for the sign extension logic.
+
+1:
+  value:    01h
+  expected: 0001h
+  res:      0001h
+
+2:
+  value:    10h
+  expected: 0010h
+  res:      0010h
+
+3:
+  value:    70h
+  expected: 0070h
+  res:      0070h
+
+4:
+  value:    80h
+  expected: FF80h
+  res:      FF80h
+
+F extends with zeroes because the HO bit of the 8 bit value that represents F (0000 1111b) is zero, thus it is a positive number, However, F0 would b ein binary 1111 0000b therefore we would extend it with F's. In fact if the HO bit of the 8 bit value is a 1, then we would extend it with Fs. Meaning any value larger than 7Fh would be extended with F's.
+
+For Zero Extending 16 bit values to 32 bit, we would just add 0s to the HO WORD
+For Sign Extending 16 bit values to 32 bit, we would just add 0's or 1s to the HO word depending on the value of the HO bit of the original 16 bit value.
+
+These are useful so that we can get values from memory that are stored with fewer bits into registers that expect a specific amount of bits to operate.
+
+Depending on the operation type that the ALU is suppsoed to take on the values that are loaded from memory, we might want to extend them with 0s or 1's to fit into the register.

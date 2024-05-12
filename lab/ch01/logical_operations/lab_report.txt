@@ -1,0 +1,76 @@
+Logical Operations
+
+1. Masking to get the nth bit:
+  To get the 5th bit:
+  value: 1101 1010
+  mask : 0001 0000
+  op   : AND
+  res  : 0001 0000
+  checked with the program
+
+  to get the LO nibble:
+  value: 1010 1110
+  mask : 0000 1111
+  op   : AND
+  res  : 0000 1110
+
+  to zero the value
+  value: 1101 1001
+  mask : 0000 0000
+  op   : AND
+  res  : 0000 0000
+
+  inversion
+  value: 1001 1110
+  mask : 1111 1111
+  op   : XOR
+  res  : 0110 0001
+
+ANDing with: 
+  000F masks all bits except for LO nibbble
+  00FF masks all bits except for LO byte
+  0FFF masks the HO nibble
+  FF00 masks LO nibble and keeps HO nibble
+
+ORing with:
+  000F keeps nibbles 3 2 1 same but turns LO nibble to all ones
+  00FF keeps HO byte same turns LO byte to all ones
+  0FFF keeps the HO nibble as is, turns all else to 1s
+  FF00 keeps the LO byte same and turns the HO byte to all 1s
+ XORing with:
+  000F inverts the LO nibble, keeps all else same
+  00FF inverts LO byte, keeps all else same
+  0FFF keeps HO nibble same, inverts the rest
+  FF00 inverts the HO byte, lo byte stays the same
+
+Mask to Convert ASCII of '0...9' to corresponding binary integer
+  mask: 000F
+  op  : AND
+  res : This would retreive the lo nibble, which corresponds to the actual number, If one gives other values, the result could be any integer between 0 and 15, for ASCII numbers, this mask works since the LO nibble is the actual number. For non numeric values, we just get the LO nibble,
+
+Mask to Convert integer values of range 0...9 to ASCII:
+  mask: 0011 0000 or 0030
+  op:   OR
+  res:  If one enters valid integer values between 0...9, the OR mask would keep the integer as is and add the 3 to the 1st nibble. If one enters values that are larger, until 0Fh data would not be corrupted, the 3 would be added to the 1st nibble again, however, once the input goes above 0Fh, the 1st nibble will be OR'd with the 0011, or 03h, which can change the data.
+
+Mask to determine the sign of a 16-bit integer:
+  mask: 1000 0000 0000 0000b or 1000h
+  op:   AND
+  res:  We would only get the value of the sign bit when this op is performed, we'd get 0 if we have a positive or zero integer, and a non zero result if the integer was negative. This is assuming we are given a signed integer of 16-bits. For unsigned 16 bit integers, we might get a result that suggests that the integer is negative if the integer given was above 32,767. If we change the location of the 1 bit in the mask, we can get a mask to test any single bit for whether it is 0 or 1 within the set of 16 bits.
+
+Mask that is equivalent to NOT with the XOR operation:
+  mask: FFFFh
+  op:   XOR
+  res:  When a value is XOR'd with all ones, all of the bits of the original value would flip, since 0 and 1 XOR'd would give 1 and 1 and 1 XOR'd would give 0
+
+Do SHL and SHR correspond to multiplication and division by 2?
+  res:  If data is shifted out of the HO bit, this corresponds to an overflow, or a carry. The number would be larger than the amount of bits allocated to represent it could hold. If data is shifted out of the LO bit, that would be similar to remainders, and the remainder is lost and the result would be rounded, up ro down, we can't tell.
+
+ROL operation to positive and negative numbers:
+  if it is not all 1s or all 0s both the positive and negative number would looke like it's close to doubling until a different bit is in the place of the sign bit
+
+NEG vs NOT
+  NEG inverts everything then adds one, NOT only inverts. The algo that NEG uses represents the way of taking the two's complement of a number in the 2's complement system.
+
+
+
