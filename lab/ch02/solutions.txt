@@ -1,0 +1,544 @@
+1: What is the identity element w/ respect to:
+  a) AND
+    A AND 1 = A
+  b) OR
+    A OR 0 = A
+  c) XOR
+    A XOR 0 = A
+  d) NOT
+    NOT NOT A = A (double complement)
+  e) NAND
+    Does not have one
+  f) NOR
+    Does not have one
+
+2: Provide truth table for the following functions with two input variables:
+  a) AND
+    _|_0_|_1_|
+    0| 0   0 |
+    1| 0   1 |
+  b) OR
+    _|_0_|_1_|
+    0| 0   1 |
+    1| 1   1 |
+  c) XOR
+    _|_0_|_1_|
+    0| 0   1 |
+    1| 1   0 |
+  d) NAND
+    _|_0_|_1_|
+    0| 1   1 |
+    1| 1   0 |
+  e) NOR
+    _|_0_|_1_|
+    0| 1   0 |
+    1| 0   0 |
+
+3: Provide the truth tables for the following functions of three input variables:
+  a) ABC (AND)
+    C | B | A | ABC
+    0   0   0 |  0
+    0   0   1 |  0
+    0   1   0 |  0
+    0   1   1 |  0
+    1   0   0 |  0
+    1   0   1 |  0
+    1   1   0 |  0
+    1   1   1 |  1
+  
+  b) A+B+C (OR)
+    C | B | A | A+B+C
+    0   0   0 |  0
+    0   0   1 |  1
+    0   1   0 |  1
+    0   1   1 |  1
+    1   0   0 |  1
+    1   0   1 |  1
+    1   1   0 |  1
+    1   1   1 |  1
+
+  c) (ABC)' (NAND)
+    C | B | A | ABC
+    0   0   0 |  1
+    0   0   1 |  1
+    0   1   0 |  1
+    0   1   1 |  1
+    1   0   0 |  1
+    1   0   1 |  1
+    1   1   0 |  1
+    1   1   1 |  0
+
+  d) (A+B+C)' (NOR)
+    C | B | A | A+B+C
+    0   0   0 |  1
+    0   0   1 |  0
+    0   1   0 |  0
+    0   1   1 |  0
+    1   0   0 |  0
+    1   0   1 |  0
+    1   1   0 |  0
+    1   1   1 |  0
+
+  e) (ABC) + (A'B'C') (Equivalence)
+    C | B | A | (ABC) + (A'B'C')
+    0   0   0 |  1
+    0   0   1 |  0
+    0   1   0 |  0
+    0   1   1 |  0
+    1   0   0 |  0
+    1   0   1 |  0
+    1   1   0 |  0
+    1   1   1 |  1
+
+  f) (ABC + A'B'C')' (XOR)
+    C | B | A | A+B+C
+    0   0   0 |  0
+    0   0   1 |  1
+    0   1   0 |  1
+    0   1   1 |  1
+    1   0   0 |  1
+    1   0   1 |  1
+    1   1   0 |  1
+    1   1   1 |  0
+
+4: Provide schematics showing how to implement each of the functions in question three using only two input gates and inverters eg:
+  a) ABC
+              
+                C----|&&
+      A---|&&        |&&----- ABC
+          |&&--------|&&
+      B---|&&
+      
+  b) A + B + c
+              
+                C----|OR
+      A---|OR        |OR----- A+B+C
+          |OR--------|OR
+      B---|OR
+
+  c) (ABC)'
+              
+                C----|&&
+      A---|&&        |&&---|>o-- (ABC)'
+          |&&--------|&&
+      B---|&&
+  
+   d) (A + B + C)'
+              
+                C----|OR
+      A---|OR        |OR---|>o-- (A+B+C)'
+          |OR--------|OR
+      B---|OR
+  
+  e) (ABC) + (A'B'C')
+               
+                C--o-|&&
+      A-o---|&&    | |&&--------------|OR
+        |   |&&----)-|&&              |OR------- (ABC) + (A'B'C')
+      B-)-o-|&&    |              ----|OR
+        | |        |--|>o---|&&   |
+        | |                 |&&---|
+        | |-|>o-|&&     |---|&&
+        |       |&&-----|     
+        |-|>0---|&&    
+    
+  f) (ABC + A'B'C')' (XOR)
+                
+                C--o-|&&
+      A-o---|&&    | |&&--------------|OR
+        |   |&&----)-|&&              |OR----|>o-- (ABC + A'B'C')' (XOR)
+      B-)-o-|&&    |              ----|OR
+        | |        |--|>o---|&&   |
+        | |                 |&&---|
+        | |-|>o-|&&     |---|&&
+        |       |&&-----|     
+        |-|>0---|&&    
+    
+5: Implementation of AND OR and NOT with NOR gates:
+
+  c) NOT (Tying both NOR inputs to the same input): 0 NOR 0 = 1, 1 NOR 1 = 0
+
+      A-----|NOR
+         |  |NOR---- A'
+         |--|NOR
+    
+   a) AND (Since AB = (A' + B')' )
+    
+      A---(NOR inverter from part C here)-----|NOR
+                                              |NOR---- (AB)
+      B---(NOR inverter from part C here)-----|NOR
+    
+  b) OR (Since NOT(NOT(OR))) == OR
+    
+      A---|NOR
+          |NOR---(NOR inverter from part C here)--- (A+B)
+      B---|NOR
+ 
+6: What is the principle of duality? What does it do for us?
+  The principle of duality states that if one swaps the ANDs with ORs and the 0s with 1s, the logic would yield the same result.
+  This helps us simplify functions in certain cases, allows us to design circuits with only one type of logic element (since everything else can be swapped in a way to retain the functionality), etc.
+
+7: Build a single truth table that provides the outputs for the following three boolean functions:
+  Fx = A + BC
+  Fy = AB + C'B
+  Fz = A'B'C' + ABC + C'B'A
+
+  | C | B | A |  Fx |  Fy |  Fz |
+  | 0 | 0 | 0 |  0  |  0  |  1  |
+  | 0 | 0 | 1 |  1  |  0  |  1  |
+  | 0 | 1 | 0 |  0  |  1  |  0  |
+  | 0 | 1 | 1 |  1  |  1  |  0  |
+  | 1 | 0 | 0 |  0  |  0  |  0  |
+  | 1 | 0 | 1 |  1  |  0  |  0  |
+  | 1 | 1 | 0 |  1  |  0  |  0  |
+  | 1 | 1 | 1 |  1  |  1  |  1  |
+
+8: Provide the fn numbers of the tree functions in Q7 above:
+  Fx = F11101010 = F_ea = 10 + 14*16 = F234
+  Fy = 10001100 = F_8C = 12 + 8*16 = 140
+  Fz = 10000011 = F_83 = 3 + 8*16 = 131
+
+9: How many possible (unique) boolean fns are there if the fn has
+  a) 1 input
+    2^2^1 = 4
+  b) 2 input
+    2^2^2 = 16
+  c) 3 input
+    2^2^3 = 256
+  d) 4 inputs
+    2^2^4 = 65536
+  e) 5 inputs
+    2^2^5 = 4294967296
+
+10: Simplify the following bool fns using algebraic transformations. Show your work
+
+  a) F = AB + AB'
+      A(B+B')
+      A(1)
+      A           ■
+
+  b) F = ABC + BC' + AC + ABC'
+      ABC + ABC' + BC' + AC
+      AB(C+ C') + BC' + AC
+      AB + BC' + AC         ■
+
+  c) F = A'B'C'D' + A'B'C'D + A'B'CD + A'B'CD'
+      A'B'C'(D' + D) + A'B'CD + A'B'CD'
+      A'B'(C' + CD + CD')
+      A'B'(C' + C(D+D'))
+      A'B'(C' + C)
+      A'B'                 ■
+
+  d) F = A'BC + ABC' + A'BC' + AB'C' + ABC + AB'C
+    BC(A' + A) + ABC' + A'BC' + AB'C' + AB'C
+    BC + BC'(A + A') + AB'C' + AB'C
+    BC + BC' + AB'(C' + C)
+    B(C+C') + AB'
+    B + AB'
+    (B + A)(B + B')
+    B + A                    ■
+
+11: Simplify the bool fns in Q10 using the K-Map method
+  See 11.jpg
+
+12: Provide the logic equations in canonical form for the boolean functions S0..S6 for the seven segment display.
+
+     _0_
+  1 |   | 3
+    |_2_|
+  4 |   | 6
+    |_5_|
+ 
+  D | C | B | A | HEX | Segments      |   Canonical Form of the Input
+  0 | 0 | 0 | 0 |  0  | 0 1   3 4 5 6 |   D'C'B'A'
+  0 | 0 | 0 | 1 |  1  |       3     6 |   D'C'B'A
+  0 | 0 | 1 | 0 |  2  | 0   2 3 4 5   |   D'C'BA'
+  0 | 0 | 1 | 1 |  3  | 0   2 3   5 6 |   D'C'BA
+  0 | 1 | 0 | 0 |  4  |   1 2 3     6 |   D'CB'A'
+  0 | 1 | 0 | 1 |  5  | 0 1 2     5 6 |   D'CB'A
+  0 | 1 | 1 | 0 |  6  | 0 1 2   4 5 6 |   D'CBA'
+  0 | 1 | 1 | 1 |  7  | 0     3     6 |   D'CBA
+  1 | 0 | 0 | 0 |  8  | 0 1 2 3 4 5 6 |   DC'B'A'
+  1 | 0 | 0 | 1 |  9  | 0 1 2 3   5 6 |   DC'B'A
+  1 | 0 | 1 | 0 |  A  | 0   2 3 4 5 6 |   DC'BA'
+  1 | 0 | 1 | 1 |  B  |   1 2   4 5 6 |   DC'BA
+  1 | 1 | 0 | 0 |  C  | 0 1     4 5   |   DCB'A'
+  1 | 1 | 0 | 1 |  D  |     2 3 4 5 6 |   DCB'A
+  1 | 1 | 1 | 0 |  E  | 0 1 2   4 5   |   DCBA'
+  1 | 1 | 1 | 1 |  F  | 0 1 2   4     |   DCBA
+
+S0 = D'C'B'A' + D'C'BA' + D'C'BA + D'CB'A + D'CBA' + D'CBA + DC'B'A' + DC'B'A + DC'BA' + DCB'A' + DCBA' + DCBA
+S1 = D'C'B'A' + D'CB'A' + D'CB'A + D'CBA' + DC'B'A' + DC'B'A + DC'BA + DCBA' + DCBA
+S2 = D'C'BA' + D'C'BA + D'CB'A' + D'CB'A + D'CBA' + DC'B'A' + DC'B'A + DC'BA' + DC'BA + DCB'A + DCBA' + DCBA
+S3 = D'C'B'A' + D'C'B'A + D'C'BA' + D'C'BA + D'CB'A' + D'CBA + DC'B'A' + DC'B'A + DC'BA' + DCB'A
+S4 = D'C'B'A' + D'C'BA' + D'CBA' + DC'B'A' + DC'BA' + DC'BA + DCB'A' + DCB'A + DCBA' + DCBA
+S5 = D'C'B'A' + D'C'BA' + D'C'BA + D'CB'A + D'CBA' + DC'B'A' + DC'B'A + DC'BA' + DC'BA + DCB'A' + DCB'A + DCBA'
+S6 = D'C'B'A' + D'C'B'A + D'C'BA + D'CB'A' + D'CB'A + D'CBA' + D'CBA + DC'B'A' + DC'B'A + DC'BA' + DC'BA + DCB'A
+
+  D | C | B | A ||  S0 | S1 | S2 | S3 | S4 | S5 | S6 | 
+  0 | 0 | 0 | 0 ||  1  | 1  | 0  | 1  | 1  | 1  | 1  |
+  0 | 0 | 0 | 1 ||  0  | 0  | 0  | 1  | 0  | 0  | 1  |
+  0 | 0 | 1 | 0 ||  1  | 0  | 1  | 1  | 1  | 1  | 0  |
+  0 | 0 | 1 | 1 ||  1  | 0  | 1  | 1  | 0  | 1  | 1  |
+  0 | 1 | 0 | 0 ||  0  | 1  | 1  | 1  | 0  | 0  | 1  |
+  0 | 1 | 0 | 1 ||  1  | 1  | 1  | 0  | 0  | 1  | 1  |
+  0 | 1 | 1 | 0 ||  1  | 1  | 1  | 0  | 1  | 1  | 1  |
+  0 | 1 | 1 | 1 ||  1  | 0  | 0  | 1  | 0  | 0  | 1  |
+  1 | 0 | 0 | 0 ||  1  | 1  | 1  | 1  | 1  | 1  | 1  |
+  1 | 0 | 0 | 1 ||  1  | 1  | 1  | 1  | 0  | 1  | 1  |
+  1 | 0 | 1 | 0 ||  1  | 0  | 1  | 1  | 1  | 1  | 1  |
+  1 | 0 | 1 | 1 ||  0  | 1  | 1  | 0  | 1  | 1  | 1  |
+  1 | 1 | 0 | 0 ||  1  | 1  | 0  | 0  | 1  | 1  | 0  |
+  1 | 1 | 0 | 1 ||  0  | 0  | 1  | 1  | 1  | 1  | 1  |
+  1 | 1 | 1 | 0 ||  1  | 1  | 1  | 0  | 1  | 1  | 0  |
+  1 | 1 | 1 | 1 ||  1  | 1  | 1  | 0  | 1  | 0  | 0  |
+
+14: Minimize each FN in Q12 using the K-Map method
+   See 14.jpg
+
+15: The logic equation for a half-adder (in canonical form) is Sum = AB’ + A’B Carry = AB
+  a) Provide an electronic circuit diagram for a half-adder using AND, OR, and Inverter gates
+      See 15.jpg
+  b) Provide the circuit using only NAND gates
+      See 15.jpg
+
+16: The canonical equations for a full adder take the form: Sum = A’B’C + A’BC’ + AB’C’ + ABC Carry = ABC + ABC’ + AB’C + A’BC
+
+  a) Provide the schematic for these circuits using AND, OR, and inverter gates.
+    See 16_a.jpg
+  b) Optimize these equations using the map method.
+    See 16_b.jpg
+  c) Provide the electronic circuit for the optimized version (using AND, OR, and inverter gates).
+    See 16_c.jpg
+
+17: Assume you have a D flip-flop (use this definition in this text) whose outputs currently are Q=1 and Q’=0. Describe, in minute detail, exactly what happens when the clock line goes
+  a) from low to high with D=0
+    NAND1 inputs: 00 to 01, output: 1 to 1 no chnage
+    NAND3 inputs: 10 to 11, output: 1 to 0
+    NAND4 inputs: 11 to 10, output: 0 to 1
+    NAND2 inputs: 10 to 11, output: 1 to 0
+  b) from high to low with D=0
+    NAND3 inputs: 11 to 10, output 0 to 1
+    NAND1 no output change
+    NAND4 inputs: 00 to 01, output: 1 to 1 no change
+    NAND2 inputs: 11 to 11, output 0 to 0 no change
+  NAND:
+  _|01
+  0|11
+  1|10
+
+  D flip-flop diagram for reference:
+                       1
+           ----------|NAND        2 
+           |         |NAND------|NAND
+           |       --|NAND      |NAND---------------- Q
+           |       |          --|NAND   /  
+           |       |          |-------\/         
+           |  Clk--|                  /\
+           |       |          |------/  \
+           |       |   3      --|NAND    \
+           |       |-|NAND      |NAND---------------- Q'
+           |         |NAND------|NAND
+    DATA---|--|>o----|NAND        4
+
+
+18: Rewrite the following Pascal statements to make them more efficient:
+  a) if (x or (not x and y)) then write(‘1’);
+      X + (X'Y)
+      (X + X') (X + Y)
+      1(X+Y)
+    if(x or y) then write('1');
+
+  b) while(not x and not y) do somefunc(x,y);
+    X'Y'
+    while(not(x or y)) do somefunc(x,y);
+
+  c) if not((x <> y) and (a = b)) then Something;
+    if ((x = y) or (a <> b)) then Something;
+
+19: Provide canonical forms (sum of minterms) for each of the following: 
+  a) F(A,B,C) = A’BC + AB + BC 
+    C | B | A || F
+    0 | 0 | 0 || 0
+    0 | 0 | 1 || 0
+    0 | 1 | 0 || 0
+    0 | 1 | 1 || 1
+    1 | 0 | 0 || 0
+    1 | 0 | 1 || 0
+    1 | 1 | 0 || 1
+    1 | 1 | 1 || 1
+
+    Sum Of Minterms: CBA + CBA' + C'BA
+
+  b) F(A,B,C,D) = A + B + CD’ + D
+    D | C | B | A || F
+    0 | 0 | 0 | 0 || 0
+    0 | 0 | 0 | 1 || 1
+    0 | 0 | 1 | 0 || 1
+    0 | 0 | 1 | 1 || 1
+    0 | 1 | 0 | 0 || 1
+    0 | 1 | 0 | 1 || 1
+    0 | 1 | 1 | 0 || 1
+    0 | 1 | 1 | 1 || 1
+    1 | 0 | 0 | 0 || 1
+    1 | 0 | 0 | 1 || 1
+    1 | 0 | 1 | 0 || 1
+    1 | 0 | 1 | 1 || 1
+    1 | 1 | 0 | 0 || 1
+    1 | 1 | 0 | 1 || 1
+    1 | 1 | 1 | 0 || 1
+    1 | 1 | 1 | 1 || 1
+
+    Sum Of Minterms: D'C'B'A + D'C'BA' + D'C'BA + D'CB'A' + D'CB'A + D'CBA' + D'CBA + DC'B'A' + DC'B'A + DC'BA' + DC'BA + DCB'A' + DCB'A + DCBA' + DCBA
+
+  c) F(A,B,C) = A’B + B’A 
+    C | B | A || F
+    0 | 0 | 0 || 0
+    0 | 0 | 1 || 1
+    0 | 1 | 0 || 1
+    0 | 1 | 1 || 0
+    1 | 0 | 0 || 0
+    1 | 0 | 1 || 1
+    1 | 1 | 0 || 1
+    1 | 1 | 1 || 0
+
+    Sum Of Minterms: C'B'A + C'BA' + CB'A + CBA'
+ 
+  d) F(A,B,C,D) = A + BD’
+    D | C | B | A || F
+    0 | 0 | 0 | 0 || 0
+    0 | 0 | 0 | 1 || 1
+    0 | 0 | 1 | 0 || 1
+    0 | 0 | 1 | 1 || 1
+    0 | 1 | 0 | 0 || 0
+    0 | 1 | 0 | 1 || 1
+    0 | 1 | 1 | 0 || 1
+    0 | 1 | 1 | 1 || 1
+    1 | 0 | 0 | 0 || 0
+    1 | 0 | 0 | 1 || 1
+    1 | 0 | 1 | 0 || 0
+    1 | 0 | 1 | 1 || 1
+    1 | 1 | 0 | 0 || 0
+    1 | 1 | 0 | 1 || 1
+    1 | 1 | 1 | 0 || 0
+    1 | 1 | 1 | 1 || 1
+
+    Sum Of Minterms: D'C'B'A + D'C'BA' + D'C'BA + D'CB'A + D'CBA' + D'CBA + DC'B'A + DC'BA + DCB'A + DCBA
+
+
+  e) F(A,B,C,D) = A’B’C’D + AB’C’D’ + CD + A’BCD’
+    D | C | B | A || F
+    0 | 0 | 0 | 0 || 0
+    0 | 0 | 0 | 1 || 1
+    0 | 0 | 1 | 0 || 0
+    0 | 0 | 1 | 1 || 0
+    0 | 1 | 0 | 0 || 0
+    0 | 1 | 0 | 1 || 0
+    0 | 1 | 1 | 0 || 1
+    0 | 1 | 1 | 1 || 0
+    1 | 0 | 0 | 0 || 1
+    1 | 0 | 0 | 1 || 0
+    1 | 0 | 1 | 0 || 0
+    1 | 0 | 1 | 1 || 0
+    1 | 1 | 0 | 0 || 1
+    1 | 1 | 0 | 1 || 1
+    1 | 1 | 1 | 0 || 1
+    1 | 1 | 1 | 1 || 1
+
+    Sum Of Minterms: D'C'B'A + D'CBA' + DC'B'A' + DCB'A' + DCB'A + DCBA' + DCBA
+
+20: Convert the sum of minterms forms in question 19 to the product of maxterms forms.
+  a) F(A,B,C) = A’BC + AB + BC 
+    C | B | A || F
+    0 | 0 | 0 || 0
+    0 | 0 | 1 || 0
+    0 | 1 | 0 || 0
+    0 | 1 | 1 || 1
+    1 | 0 | 0 || 0
+    1 | 0 | 1 || 0
+    1 | 1 | 0 || 1
+    1 | 1 | 1 || 1
+
+    Sum Of Minterms: CBA + CBA' + C'BA
+    
+    Swap ANDs and ORs   : (C+B+A).(C+B+A').(C'+B+A)
+    Swap ONEs and ZEROs : (C' + B' + A').(C' + B' + A).(C + B' + A')
+    
+
+  b) F(A,B,C,D) = A + B + CD’ + D
+    D | C | B | A || F
+    0 | 0 | 0 | 0 || 0
+    0 | 0 | 0 | 1 || 1
+    0 | 0 | 1 | 0 || 1
+    0 | 0 | 1 | 1 || 1
+    0 | 1 | 0 | 0 || 1
+    0 | 1 | 0 | 1 || 1
+    0 | 1 | 1 | 0 || 1
+    0 | 1 | 1 | 1 || 1
+    1 | 0 | 0 | 0 || 1
+    1 | 0 | 0 | 1 || 1
+    1 | 0 | 1 | 0 || 1
+    1 | 0 | 1 | 1 || 1
+    1 | 1 | 0 | 0 || 1
+    1 | 1 | 0 | 1 || 1
+    1 | 1 | 1 | 0 || 1
+    1 | 1 | 1 | 1 || 1
+
+    Sum Of Minterms: D'C'B'A + D'C'BA' + D'C'BA + D'CB'A' + D'CB'A + D'CBA' + D'CBA + DC'B'A' + DC'B'A + DC'BA' + DC'BA + DCB'A' + DCB'A + DCBA' + DCBA
+
+  c) F(A,B,C) = A’B + B’A 
+    C | B | A || F
+    0 | 0 | 0 || 0
+    0 | 0 | 1 || 1
+    0 | 1 | 0 || 1
+    0 | 1 | 1 || 0
+    1 | 0 | 0 || 0
+    1 | 0 | 1 || 1
+    1 | 1 | 0 || 1
+    1 | 1 | 1 || 0
+
+    Sum Of Minterms: C'B'A + C'BA' + CB'A + CBA'
+ 
+  d) F(A,B,C,D) = A + BD’
+    D | C | B | A || F
+    0 | 0 | 0 | 0 || 0
+    0 | 0 | 0 | 1 || 1
+    0 | 0 | 1 | 0 || 1
+    0 | 0 | 1 | 1 || 1
+    0 | 1 | 0 | 0 || 0
+    0 | 1 | 0 | 1 || 1
+    0 | 1 | 1 | 0 || 1
+    0 | 1 | 1 | 1 || 1
+    1 | 0 | 0 | 0 || 0
+    1 | 0 | 0 | 1 || 1
+    1 | 0 | 1 | 0 || 0
+    1 | 0 | 1 | 1 || 1
+    1 | 1 | 0 | 0 || 0
+    1 | 1 | 0 | 1 || 1
+    1 | 1 | 1 | 0 || 0
+    1 | 1 | 1 | 1 || 1
+
+    Sum Of Minterms: D'C'B'A + D'C'BA' + D'C'BA + D'CB'A + D'CBA' + D'CBA + DC'B'A + DC'BA + DCB'A + DCBA
+
+
+  e) F(A,B,C,D) = A’B’C’D + AB’C’D’ + CD + A’BCD’
+    D | C | B | A || F
+    0 | 0 | 0 | 0 || 0
+    0 | 0 | 0 | 1 || 1
+    0 | 0 | 1 | 0 || 0
+    0 | 0 | 1 | 1 || 0
+    0 | 1 | 0 | 0 || 0
+    0 | 1 | 0 | 1 || 0
+    0 | 1 | 1 | 0 || 1
+    0 | 1 | 1 | 1 || 0
+    1 | 0 | 0 | 0 || 1
+    1 | 0 | 0 | 1 || 0
+    1 | 0 | 1 | 0 || 0
+    1 | 0 | 1 | 1 || 0
+    1 | 1 | 0 | 0 || 1
+    1 | 1 | 0 | 1 || 1
+    1 | 1 | 1 | 0 || 1
+    1 | 1 | 1 | 1 || 1
+
+    Sum Of Minterms: D'C'B'A + D'CBA' + DC'B'A' + DCB'A' + DCB'A + DCBA' + DCBA
+
