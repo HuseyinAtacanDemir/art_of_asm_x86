@@ -1,0 +1,108 @@
+0000:       mov   bx, 1000
+0003: a:    get
+0004:       mov   [bx], ax
+0005:       add   bx, 2
+0008:       cmp   ax, 0
+000B:       jne   a
+
+000E:       mov   cx, bx
+000F:       mov   bx, 1000
+0012:       mov   ax, 0
+0015: b:    add   ax, [bx]
+0016:       add   bx, 2
+0019:       cmp   bx, cx
+001A:       jb    b
+
+001D:       put
+001E:       halt
+
+
+0000:
+  moves the const 16 bit value of 1000 into reg bx
+  resulting in a 3 byte long instr, immediate addr mode
+  bx ends up holding the value of 1000
+0003:
+  puts the address of the stdin device to the io bus 
+  enables the read control line
+  probably waits till the io device sends a signal,
+  specifying that data was entered
+  and the 16 bit data from the io bus is stored into ax
+0004:
+  stores the value in ax into the mem location at the 
+  addr value that bx is storing.
+  indirect axs mode is 1 byte op
+0005:
+  adds the const 2 to bx and stores the value in bx
+  effectively bx now points to the next "word" location
+  in mem, if indeed we are using bx as a ptr to mem
+  this is a 3 byte instr, since we have a 16 bit const
+0008:
+  we compare the value of ax against 0
+  since the value we compare against is a const of size 16 bits
+  this is a 3 byte instr
+000B:
+  we jump to the addr of label a if a was not equal to 0
+  effectively stating that unless the get operation stored
+  the value 0 into ax, we keep get'ting values from the io
+  device and store them into ax
+  this is a 3 byte instr, since the label a ends up being a
+  16 bit mem address after the assembler assembles the code.
+  immediate addr mode effectively
+
+000E:
+  mov the value in bx into cx
+  bx was currently pointing at the last inputs location in mem,
+  that is it is pointing to the 0 that the io device captured.
+  now cx also stores the mem addr of that 0 in mem.
+  reg addr mode, 1 byte instr
+000F:
+  mov the immediate value of 1000 into bx
+  remember, we stored values from the io input device
+  starting at addr 1000
+  3 byte instr
+0012:
+  mov the immediate value of 0 into ax
+  3 byte instr
+0015:
+  label b location
+  we add the value at addr bx to ax
+  we initialized ax to be 0, so now
+  since this is the label location,
+  we will use ax to accumulate all the 
+  different values that bx might hold each time we jump to this instr
+  indirect adr mode
+  1 byte
+0016:
+  we add the immediate value of 2 to bx
+  essentially we make b point to the next byte
+  in mem, meaning the next input that we had received and stored in mem earlier
+  3 bytes, immediate addr mode
+0019:
+  we compare bx and cx
+  essentially, since we "saved" the addr that bx held right after we were done with the input part of the prog
+  we want to see if bx is pointing currently, to the mem location that it used to, right after
+  we received our last input, 0, from the io device at line 0005
+  1 byte
+001A:
+  jmp if cx bigger to mem adr of label b
+  if cx was bigger, then b, acting as a ptr,
+  has not yet reached the point in memory at which
+  we had seen a 0 input from the io device and stored
+  a zero at memory.
+  againt, immediate addr mode 3 bytes
+001D:
+  put whatever value was in ax to the output io device
+001E:
+  halt
+
+
+altogether, the program will accept 16 bit values from the user, store each 16 bit input in mem starting and going upwards by word at mem addr 1000,
+until the user enters a 0, at which case the flow falls through the jne instr at line 000B.
+at that point we store the ending addr of our input in cx, make bc point again to our first mem loc for io inputs
+and add each io input to ax, by incrementing bx by 2 (to the next words addr), and adding the current value of [bx] to ax each time
+until, bx ends up being the same addr of out end of file input.
+at which point, we call put. which outputs the contents of ax, ax which accumulated all the values of [bx] within the loop
+so we display the sum of all the values that the user had entered.
+
+I don't exactly know why get and put does io mapped io instead of mem mapped io.
+I don't know the advantages of one or the other

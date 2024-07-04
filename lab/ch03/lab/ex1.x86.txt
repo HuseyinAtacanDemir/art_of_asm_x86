@@ -1,0 +1,72 @@
+0000:     mov   ax, [1000]
+0003:     mov   bx, [1002]
+0006:     add   ax, bx
+0007:     sub   ax, 1
+000A:     mov   bx, ax
+000B:     add   bx, ax
+000C:     add   ax, ax
+000D:     halt
+ 
+Address: Instruction      Disassembly
+  Explanation
+0000: C6 00 10      mov   ax, [1000]
+    This instruction is a direct address mode mov into reg ax from mem addr 1000.
+  We put the number 1234h into the mem location 1000 in a little endian fashion,
+  therefore when the mov instruction is processed, the word starting at addr 1000
+  is copied into the 16 bit reg ax. The LO and HO bytes are rearranged by the 
+  circuitry automatically, and ax ends up storing the value of 1234 after the op.
+    The hex representation of the instruction, C6 00 10, in binary 1100 0110 00000000 00010000
+  shows, 
+    iii:  110 -> mov reg, mem/reg/const
+    rr:   00  -> ax
+    mmm:  110 -> [xxxx]
+  that the next 16 bits of information cpu receives will be a direct mem addr, and that mem addr
+  is also provided in little endian format.
+  This instruction ends up being 3 bytes long, thus the next instruction will be at addr 0003,
+  the CU will increment the IP register to the correct addr by virtue of the circuitry that
+  detected a direct addr mode mov instr.
+0003: CE 02 10      mov   bx, [1002]
+    The working principle of this instruction is the same as the one above. The difference in the
+  opcode byte is due to the fact that the bx registed is selected to store the value from mem.
+  CE -> 11001110
+    iii:  110 -> mov reg, mem/reg/const
+    rr:   01  -> bx
+    mmm:  110 -> [xxxx]
+  At the end of the instruction, bx holds the value of 0201, which was the value stored at mem addr
+  1002 in a little endian way:
+    1002: 01
+    1003: 02
+  Again this instr is 3 bytes long, so the IP is incremented to addr 0006.   
+0006: A1            add   ax, bx
+    This instruction adds values of registers ax and bx together and stores the result in ax.
+  After the instruction, bx still holds the same value, and ax holds 0201 + 1234 -> 1435
+  the opcode A1 -> 10100001
+    iii:  101 -> add
+    rr:   00  -> ax
+    mmm:  001 -> bx
+  does not require a 16 bit value following it, and the whole instruction is 1 byte long so the IP
+  is incremented to 0007.
+0007: 87 01 00      sub   ax, 0001
+    This instr subtracts the immediate value 0001 from ax and stores the result into ax.
+  At the end of the instr ax holds the value of 1434.
+  the opcode 87 01 00 -> 10000111 00000001 00000000
+    iii:  100 -> sub
+    rr:   00  -> ax
+    mmm:  111 -> const
+  declares that the next 2 bytes after the opcode is a const value
+  const value is presented in the little endian format in mem.
+  The instr is 3 bytes long so IP is incremented to 000A.
+000A: C8            mov   bx, ax
+  Value stored in ax is moved into bx, both ax and bx become 1434.
+  1 byte long instr
+  IP ++
+000B: A0            add   ax, ax
+  ax is added with ax and result stored in ax, essentially ax*2
+  ax ends up storing 2868
+000C: A1            add   ax, bx
+  ax is added with bx, res stored in ax, essentially an overall effect of ax *= 3
+  from the perspective instr at line 000A
+  ax ends up storing 3C9C
+  bx still stores 1434
+000D: 05            halt
+  program halts
