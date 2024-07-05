@@ -1,0 +1,126 @@
+;Locations fff0 fff2 fff4 correspond to the first three toggle switches
+;on the emulator's execution page. These are mem mapped io devs that
+;out a 0 or a 1 into the corresponding mem loc depending upon the state
+;of the corresponding switch (on or off)
+
+;Locations fff8 fffa fffc fffe are the four mem-mapped leds, which can be
+;seen on the emulator's execution page. Depending on the value stored in 
+;their corresponding mem locs, these leds turn on or off.
+
+0000:   a:    mov     ax, [fff0]
+0003:         mov     bx, [fff2]
+
+0006:         mov     cx, ax          ;Computers Sw0 and Sw1
+0007:         and     cx, bx
+0008:         mov     [fff8], cx
+
+000B:         mov     cx, ax          ;Computes Sw0 or Sw1
+000C:         or      cx, bx
+000D:         mov     [fffa], cx
+
+0010:         mov     cx, ax          ;Computes Sw0 xor Sw1
+0011:         mov     dx, bx          ;Remember, xor = AB' + A'B
+0012:         not     cx
+0013:         not     dx
+0014:         and     cx, bx
+0015:         and     dx, ax
+0016:         or      cx, dx
+0017:         mov     [fffc], cx
+
+001A:         not     cx              ;Computes Sw0 = Sw1
+001B:         mov     [fffe], cx      ;Remember, equals = not xor
+
+001E:         mov     ax, [fff4]      ;Read the third switch
+0021:         cmp     ax, 0           ;See if it's on
+0024:         je      a               ;Repeat this program while off
+0027:         halt
+
+
+Firstly, there is a loop between lines 0000 and 0024. The flow falls through
+the jump if equal instruction on line 0024 to the halt instruction on line 0027
+only if the value at mem loc fff4 is a 1, meaning the toggle switch number 3 is 
+turned on. Until the user turns the toggle switch three on, the program will 
+continue running. This is achieved by storing the state of toggle3 in ax at 
+line 001E, followed by comparing ax with 0, which feeds the flag information
+to the je instruction on line 0024.
+
+
+Lines 0000 and 0003 store the current value at mem locs fff0 and fff2 into regs
+ax and bx respectively; these mem locations store the states of the first and
+second toggle switches.
+
+
+Lines 0006 0007 and 0008 
+  1) store the current value of ax (state of toggle1) into cx
+  2) logically and cx and bx (state of toggle2) and store the result back in cx
+  3) and store the value of cx into the mem loc fff8 (mem loc of led1)
+Therefore led1 will always show the result of AND'ing the values of ax and bx.
+
+
+Lines 000B 000C and 000D
+  1) store the current value of ax (state of toggle1) into cx
+  2) logically or cx and bx (state of toggle2) and store the result back in cx
+  3) and store the value of cx into the mem loc fffa (mem loc of led2)
+Therefore led2 will always show the result of OR'ing the values of ax and bx
+
+
+Lines 0010 to 0017
+  1) store the current value of ax (state of toggle1) into cx
+  2) store the current value of bx (state of toggle2) into dx
+  3) not cx (holds state of toggle1)
+  4) not dx (holds state of toggle2)
+  5) and cx and bx back into cx
+  6) and dx and ax into dx
+  7) or cx and dx into cx
+  8) move cx into mem loc fffc, the loc of led3
+
+Essentially, since our instruction set does include an xor, since the ALU
+does not have the dedicated circuitry for an xor operatipn, we calculate the
+xor of the states of toggle1 and toggle2 by using the formula:
+  xor = AB' + A'B.
+
+Before line 0012 is carried out, we have two copies of the states of each
+toggle, toggle1 in ax and cx, toggle2 in bx and dx.
+
+Lets call the states of toggle1 and toggle2 A and B respectively to better
+see the correspondence of our instructions with the formula for xor given
+above.
+
+Initially, 
+  ax = cx = A
+  bx = dx = B
+After lines 00012 and 00013
+  ax = A
+  bx = B
+  cx = A'
+  dx = B'
+After line 0014
+  cx = cx and bx = A'B
+After line 0015
+  dx = dx and ax = AB'
+After line 0016
+  cx = cx or dx = A'B + AB'
+  == A xor B
+So when we store cx into the mem loc for led3, we essentially end up the
+result of toggle1 XOR toggle2 into the loc of led3
+
+Lines 001A and 001B
+  1) not the xor result still stored in cx from the prev operations
+resulting in not xor or xnor
+  2) store the result into the mem loc of the led4
+This result shows whether toggle1 and toggle2 have the same states, since
+if they had different states toggle1 xor toggle2 would be a 1 and not 1
+would be a zero. so this is an equality check.
+
+Here is a table showing the states of the toggles and leds:
+|------|------||------|------|------|------|
+| fff0 | fff2 || fff8 | fffa | fffc | fffe |
+|------|------||------|------|------|------|
+|  0   |  0   ||  0   |  0   |  0   |  1   | 
+|------|------||------|------|------|------|
+|  0   |  1   ||  0   |  1   |  1   |  0   | 
+|------|------||------|------|------|------|
+|  1   |  0   ||  0   |  1   |  1   |  0   | 
+|------|------||------|------|------|------|
+|  1   |  1   ||  1   |  1   |  0   |  1   | 
+|------|------||------|------|------|------|
