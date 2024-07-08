@@ -1,0 +1,105 @@
+0000: d:    mov   cx, 0         ;Clearing location 1000
+0003:       mov   [1000], cx
+
+0006: a:    mov   cx, [1000]    ;0 test location 1000
+0009:       cmp   cx, 0
+000C:       jne   c             ;jmp to c if not 0
+
+000F:       mov   ax, [fff0]    ;Load toggle1 state into ax
+0013:       cmp   ax, 0
+0016:       je    a             ;jmp a if toggle1 0
+0019:       halt
+
+001A: c:    mov   bx, 1002      ;load immediate 1002 into bx
+001D:       mov   ax, 0         ;load immediate 0 into ax
+
+0020: b:    add   ax, [bx]      ;for cx many times, add the values
+0023:       add   bx, 2         ;starting at loc 1002 to ax
+0026:       sub   cx, 1         ;incrementing bx at each iter
+0029:       cmp   cx, 0         ;to access next loc
+002C:       jne   b
+
+002F:       put                 ;put the final sum to display
+0030:       jmp   d             ;jmp to start
+
+
+
+Overall, a quick look at the program clarifies that the loc 1000
+is the number of values that we want added, and the toggle1 is
+used to let the program logic know whether we want to quit or not.
+
+When toggle1 is off, we just keep checking loc 1000 for a non zero
+value and continue with our summation as usual. If toggle1 is ON,
+(and c is zero), we halt. 
+We might do one last summation in the case where toggle1 is on, but
+loc 1000 also holds a non zero value. Also, in the case where loc
+1000 is altered (due to an interrupt or some other thread maybe)
+while this program is in between instructions on lines 0003 and
+0006, we might never halt if at every iteration something changes
+the loc 1000 at exactly the right point. Like, imagine another
+process that just continuously writes say 10 to loc 1000, and the
+cpu runs each process fairly, one instruction for malicious and
+one for this program. Which means the mov [1000], 10 instr of the 
+malicious program would be interleaved into each other instruction
+of this program. Well i dunno.. overall, the tricky part is we do
+one last summation based on the value of loc 1000 even after the 
+toggle is switched on that's what I want to convey here, because
+we check the toggle after checking [1000] and jumping conditionally,
+i.e. we would only check toggle1 if [1000] was 0 to begin with.
+
+The user, that is me, happens to be the DMA device in this case.
+As the program is running I am tasked with altering the values of
+the mem locations starting from 1002, and making sure to write
+the corrent "count" to the location 1000, so that this program
+can accurately put the sum of the values I had provided on the
+screen.
+
+As the DMA device, I need to make sure that I first write all
+the values to corresponding mem locs, and only as the last
+op should I update the loc 1000.
+
+I don't know exacly how the Inter Process Communication would
+work in this case of the Human DMA device and the summation 
+program.
+From the way I see it, if I were to somehow write up all the
+new values starting from loc 1002 and then update the new count
+value into loc 1000 during the time where instructions 002F
+or 0030 are being carried out, we might end up not processing
+data, since the code at label d: would clear out the loc 1000
+that I update with the new count of values.
+
+I suppose since this program would effectively spend most of 
+its cpu time in the loop of label a, i.e. it is IO bound,
+and that the DMA device is an actual human being, Mr. Hyde 
+probably glossed over these issues. "no interprocess comm
+needed, since it would be very unlikely for a human to end
+up trigerring these race conditions", might have been what
+Mr. Hyde thought.
+
+The extra credit question: storing 12 into loc 1000:
+  When we store 12 into loc 1000 we end up triggering
+the put instr twice, with different values. My first
+guess is that there is an overflow, but let's actually
+step through the code ourselves first to see what might
+be happening.
+  After tinkering aruond a little bit, I have come to
+the conclusion that this has nothing to do with binary 
+logic or overflows or 8 bit/16bit stuff. It all has to do
+with the way the emulator works. The emulator sends the
+value present (by left padding with 0s) in a mem loc
+immediately, and does not wait the input area to be out
+of focus to send the update. as we type 12, we first type 1
+then type the two. So it sends the 1 to the program,
+and then sends 12. As to why the mem loc is not zeroed before
+we can even type the second digit, i have no clue.
+Let's try if this is correct by typing 21 instead. If we are
+correct, we would see 3 and 6 as the outputs.
+
+when we first step to the line 0006 and before executing the
+line, we change the mem loc 1000 to 12, we do not see the same
+behaviour.
+
+From this perhaps we might conclude that timing is important
+in DMA, since another process might be reading the same loc
+as the DMA device is writing to it. We might need locks, IPC
+etc.
