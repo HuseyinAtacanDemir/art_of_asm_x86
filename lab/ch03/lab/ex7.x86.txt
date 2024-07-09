@@ -1,0 +1,71 @@
+Self Modifying Code
+
+;Integer to Binary converter.
+;Expects an unsigned integer value in AX.
+;Converts this to a string of zeros and ones storing this string of 
+;values into memory starting at location 1000h.
+
+0100:     mov   bx, 1000    ;Starting address of string
+0103:     mov   cx, 10      ;16 (10h) digits in a word
+0106: a:  mov   dx, 0       ;Assume current bit is zero
+0109:     cmp   ax, 8000    ;See if AX's HO bit is zero or one
+010C:     jb    b           ;Branch if AX's HO bit is zero
+010F:     mov   dx, 1       ;AX's HO bit is one, set that here
+0112: b:  mov   [bx], dx    ;Store zero or one to next string loc
+0113:     add   bx, 1       ;Bump BX up to the next string location
+0116:     add   ax, ax      ;AX = AX * 2 (shift left operation)
+0117:     sub   cx, 1       ;Count off 16 bits
+011A:     cmp   cx, 0       ;Repeat 16 tiumes
+011D:     ja    a
+0120:     jmp   0           ;Return to caller via self-mod code
+
+
+;Integer to Binary converter main program
+0000:     mov   ax, 000C    ;Address of the BRK instr below
+0003:     mov   [121], ax   ;Store into JMP as return address
+0006:     mov   ax, 1234    ;Convert 1234h to binary
+0009:     jmp   100         ;"Call" subroutine above
+000C:     brk               ;Pause to let the user examine 1000h
+
+000D:     mov   ax, 0019    ;Address of the BRK instr below
+0010:     mov   [121], ax
+0013:     mov   ax, FDEB    ;Convert FDEBh to binary
+0016:     jmp   100
+0019:     brk
+
+001A:     mov   ax, 26      ;Address of hal instr below
+001D:     mov   [121], ax
+0020:     mov   ax, 2345    ;Convert 2345h to binary
+0023:     jmp   100
+0026:     halt
+
+
+Since the x86 architecture studied in this chapter is lacking
+with respect to subroutines, it does not provide direct ways to
+call and return from a subroutine, we can simulate a call and a
+return using the jmp instruction and a bit of self modifying code.
+
+The top code excerpt sits at location 100h in memory and converts a
+hex number to a string of ones and zeroes that it stores starting at
+address 1000h.
+
+However, this "subroutine" does not have a location to jump back to
+specified in its code. The second and third bytes of the JMP instruction
+at the end of the "subroutine" are altered by the main program before
+making the call to the "subroutine" so that even without the existence
+of call and return instructions in the instruction set, we can simulate
+a call and return.
+
+If we wanted to move the main program, say, to 800h and the subroutine
+to 900h in mem, we wouldn't change anything in the subroutine code, only
+that we would need to assemble it at loc 900h.
+But in the main program, all the instances where we previously set the
+mem loc 121 with the address to return to, we would instead set the mem
+loc 921h; also, we would change the ret addrs'es that we are setting
+with 80Ch, 819h, 826h respectively for the three occasions where we
+issue a call. We would of course also need to jump to mem loc 900h
+to "call" the "subroutine".
+
+Finally, in order to call our main program in the simulator, we would
+need to modify the instruction pointer to point to location 800 before
+we press the run button.
