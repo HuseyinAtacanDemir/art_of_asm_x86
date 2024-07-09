@@ -1,0 +1,76 @@
+Main Program:
+
+0000: a:    mov   ax, [1000]    
+0003:       cmp   ax, [1002]
+0006:       je    b
+0009:       put
+000A:       mov   [1002], ax
+
+000D: b:    mov   ax, [FFF0]
+0010:       cmp   ax, 0
+0013:       je    a
+0016:       halt
+
+Interrupt Service Routine (ISR)
+
+0100:       mov   ax, [1000]
+0103:       add   ax, 1
+0106:       mov   [1000], ax
+0109:       iret
+
+When the program starts, it compares the values in mem loc 1000 
+and 1002 through the usage of the ax register as an intermediary.
+
+Whenever the values are different, the value in mem loc 1000 is
+printed to the screen, and 1002 is updated to have the same value
+as was read from mem loc 1000. Then control flow passes down to 
+the toggle1 checking logic in label b.
+
+If the values are same, the control flow is directed to label b
+without printing anything to the screen.
+
+Since the main program is only responsible for comparing values
+at mem loc 1000 and 1002, the question of how those values are
+set arises.
+
+The ISR is responsible for altering the value found at mem loc
+1000. Whenever there is an interrupt, the ISR increments the
+value by one and then returns the cpu to the main program.
+
+Therefore, the ISR renders values at mem loc 1000 and 1002
+different whenever there is an interrupt, which is caught by
+the main program and the value is printed to the screen.
+
+In the case where all values are initialized to 0, pressing
+the interrupt button on the simulator has the effect of count-
+ing the number of interrupts received.
+
+In order to make the ISR reside at a different location, first
+the ISR code would have to be loaded to that location, and the 
+interrupt vector would have to be modified accordingly, i.e. if
+the ISR was loaded to mem loc 2000, th einterrupt vector would
+need to be changed to the value 2000.
+
+Here is a sample interrupt routine that modifies the mem loc
+1000 to be the next char in the alphabet and wraps back after
+reaching Z [capital z]. Since I don't know how to print out a
+char using the put instr, I will just print the numbers 41h
+to 5Ah for this example.
+
+Alphabet ISR
+
+0200:       mov   ax, [1000]      ;load the current value at 1000 into ax
+0203:       cmp   ax, 0
+0206:       je    d
+
+0209:       add   ax, 1 
+020C:       cmp   ax, 5B
+
+020F:       je    d
+0212: c:    mov   [1000], ax
+0215:       iret
+
+0216: d:    mov   ax, 41
+0219:       mov   [1000], ax
+021C:       jmp   c
+
