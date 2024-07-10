@@ -1,0 +1,24 @@
+	get
+	mov	[1008], ax
+
+a:	mov	ax, [fff0]
+	mov	bx,	[fff2]
+	mov	cx, [fff4]
+	mov	dx, [fff6]
+
+	mov	[1000], ax
+	mov	[1002], bx
+	mov	[1004], cx
+	mov	[1006], dx
+
+	mov	dx, 0025
+	mov	[135], dx
+	jmp	100
+
+	cmp	ax, 0000
+	je s	
+	mov	ax, 0001
+	jmp	t
+s:	mov	ax, 0
+t:	mov	[fffe], ax
+	jmp a

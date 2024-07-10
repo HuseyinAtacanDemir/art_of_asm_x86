@@ -1,0 +1,41 @@
+;The generic function subroutine
+;assumes bit values are stored as 2 byte words 
+;at locations 1000 to 1006 inclusive
+;and the fn number at 1008
+
+	mov	ax, [1000]
+	mov	bx, [1002]
+	mov	cx, [1004]
+	mov	dx, [1006]
+
+	add	bx, bx
+
+	add	cx, cx
+	add	cx, cx
+
+	add	dx, dx
+	add	dx, dx
+	add	dx, dx
+
+	add	ax, bx
+	add	ax, cx
+	add	ax, dx
+	mov	bx, ax
+
+	mov	cx, [1008]
+	cmp	cx, 0
+	je	z
+
+	mov	dx, 1
+l:	mov	ax, dx
+	and	ax, cx
+
+	cmp	bx, 0
+	je	r
+
+	add	dx, dx
+	sub	bx, 1
+	jmp	l
+
+z:	mov	ax, 0
+r:	jmp	0
