@@ -1,119 +1,81 @@
-;S = A'B'Cin + A'BCin' + AB'Cin' + ABCin
-;Cout = AB + ACin + BCin
-
-;We first do the above stated calculations for the first "column" of bits,
-;then we do the same for the next "column" of bits this time including the carry
-;from previous column.
-
-
-
-a:    mov   ax, [FFF6]
-      mov   bx, [FFF2]
-      mov   cx, 0
+a:	mov   ax, [FFF6]
+      	mov   bx, [FFF2]
       
-      and   ax, bx
-      and   ax, cx
-      mov   dx, ax
+     	not ax
+	and ax, 0001
+	and ax, bx
+	mov dx, ax
+	
+	mov ax, [fff6]
+	mov bx, [fff2]
+	not bx
+	and bx, 0001
+	and ax, bx
+	or dx, ax
 
-      mov   ax, [FFF6]
-      not   bx
-      not   cx
+	mov [fffe], dx
 
-      and   ax, bx
-      and   ax, cx
-      or    dx, ax
+	mov ax, [fff6]
+	mov bx, [fff2]
+	and ax, bx
+	mov cx, ax
+     
+mov	ax, [FFF4]
+mov	bx, [FFF0]
 
-      mov   ax, [FFF6]
-      not   ax
-      not   bx
-    
-      and   ax, bx
-      and   ax, cx
-      or    dx, ax
+and	ax, bx
+and	ax, cx
+mov	dx, ax
 
-      mov   ax, [FFF6]
-      not   cx
-      not   ax
-      not   bx
+mov  	ax, [FFF4]
+mov	bx, [FFF0]
 
-      and   ax, bx
-      and   ax, cx
-      or    dx, ax
+not	bx
+and	bx, 0001
+not	cx
+and 	cx, 0001
 
-      mov   [FFFE], dx
+and	ax, bx
+and	ax, cx
+or	dx, ax
 
-      mov   dx, 0
-      not   ax
-      not   bx
+mov	ax, [FFF4]
+mov	bx, [FFF0]
 
-      and   ax, bx
-      or    dx, ax
+not	ax
+and	ax, 0001   
+and	ax, bx
+and	ax, cx
+or	dx, ax
 
-      mov   ax, [FFF6]
-      and   ax, cx
-      or    dx, ax
-    
-      and   bx, cx
-      or    dx, bx
+mov	ax, [FFF4]
+mov	bx, [FFF0]
+not	ax
+and	ax, 0001
+not	bx
+and	bx, 0001
+not	cx
+and	cx, 0001
+      
+and	ax, bx
+and	ax, cx
+or	dx, ax
 
-;now dx holds Cout of first column
-
-      mov   ax, [FFF4]
-      mov   bx, [FFF0]
-      mov   cx, dx
-      mov   dx, 0
-
-      and   ax, bx
-      and   ax, cx
-      mov   dx, ax
-
-      mov   ax, [FFF4]
-      not   bx
-      not   cx
-
-      and   ax, bx
-      and   ax, cx
-      or    dx, ax
-
-      mov   ax, [FFF4]
-      not   ax
-      not   bx
-    
-      and   ax, bx
-      and   ax, cx
-      or    dx, ax
-
-      mov   ax, [FFF4]
-      not   cx
-      not   ax
-      not   bx
-
-      and   ax, bx
-      and   ax, cx
-      or    dx, ax
-
-      mov   [FFFC], dx
-
-      mov   dx, 0
-      not   ax
-      not   bx
-
-      and   ax, bx
-      or    dx, ax
-
-      mov   ax, [FFF4]
-      and   ax, cx
-      or    dx, ax
-    
-      and   bx, cx
-      mov   [FFFA], bx
-      jmp   a
+mov   [FFFC], dx
 
 
+mov	ax, [FFF4]
+mov	bx, [FFF0]
 
+and	ax, bx
+mov	dx, ax
 
+mov	ax, [FFF4]
+and	ax, cx
+or	dx, ax
 
-
-
-
-
+mov	bx, [FFF0]    
+and	bx, cx
+or	dx, bx
+mov   	[FFFA], dx
+jmp	a
