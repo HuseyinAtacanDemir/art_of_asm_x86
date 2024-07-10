@@ -1,0 +1,25 @@
+;program to convert values to their 2's complement in the array at addr 1000 of user given size 
+	get
+	mov	cx, ax
+	mov	dx, ax
+	mov	bx, 1000
+
+l:	cmp	cx, 0
+	je	h
+	
+	mov	ax, [bx]
+	
+	put
+	
+	not	ax
+	add	ax, 1
+	mov	[bx], ax
+	
+	put
+	
+	add	bx, 2
+	sub	cx, 1
+	
+	jmp	l
+
+h:	halt	

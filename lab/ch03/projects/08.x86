@@ -1,0 +1,24 @@
+	get
+	mov	cx, ax
+	mov	dx, ax
+	mov	bx, 1000
+
+l:	cmp	cx, 0
+	je	h
+	
+	mov	ax, [bx]
+	
+	put
+	
+	not	ax
+	add	ax, 1
+	mov	[bx], ax
+	
+	put
+	
+	add	bx, 2
+	sub	cx, 1
+	
+	jmp	l
+
+h:	halt	
