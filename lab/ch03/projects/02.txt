@@ -1,0 +1,42 @@
+;Callable subroutine for multiply
+
+;main program at address 0000h
+0000:     get               ;gather inputs into ax and bx
+0001:     mov   bx, ax
+0002:     get
+
+0003:     mov   cx, 000C    ;alter return address of subroutine
+0006:     mov   [135], cx   ;addr of operand of jmp instr at addr 0134
+0009:     jmp   100         ;call subroutine
+000C:     mov   ax, cx      ;subroutine returns here: move subroutine return val to ax
+
+000D:     put
+000E:     halt
+
+;Subroutine at address 100h
+0100:     cmp   ax, 0       ;check either input for zero
+0103:     je    z
+0106:     cmp   bx, 0
+0109:     je    z
+
+010C:     mov   cx, ax      ;check first input for neg value
+010D:     and   cx, 8000    ;since first value (ax) is used as a counter in iteration
+0110:     cmp   cx, 0       ;and iterative adding with a neg value still produces correct multiples due to 2's complement
+0113:     jne   a           ;we only care of the cases where either ax, or both ax and bx are neg
+
+0116: d:  mov   cx, 0       ;reset cx (our accumulator) before starting calculations
+0119: p:  cmp   ax, 0       ;use ax as the iteration counter
+011C:     je    r
+011F:     add   cx, bx      ;add bx to cx over and over again ax many times
+0120:     sub   ax, 1
+0123:     jmp   p
+
+0126: a:  not   ax          ;if both ax and bx were neg, then just flip both, since result will be positive
+0127:     add   ax, 1       ;if ax neg but bx is not, the same piece of code would flip their signs 
+012A:     not   bx          ;now mathematically, it doesn't matter whether ax or bx is neg, as long as the parity
+012B:     add   bx, 1       ;of neg inputs is the same. However, since we use ax as a counter in the iteration process
+012E:     jmp   d           ;we'd rather bx be the neg value holder, rather than ax. Flipping both always works.
+
+0131: z:  mov   cx, 0       ;in case of a zero, just return 0 immediately
+
+0134: r:  jmp   0           ;return instruction, the address of which will be modified in the main program         

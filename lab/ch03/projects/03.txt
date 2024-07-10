@@ -1,0 +1,119 @@
+;S = A'B'Cin + A'BCin' + AB'Cin' + ABCin
+;Cout = AB + ACin + BCin
+
+;We first do the above stated calculations for the first "column" of bits,
+;then we do the same for the next "column" of bits this time including the carry
+;from previous column.
+
+
+
+a:    mov   ax, [FFF6]
+      mov   bx, [FFF2]
+      mov   cx, 0
+      
+      and   ax, bx
+      and   ax, cx
+      mov   dx, ax
+
+      mov   ax, [FFF6]
+      not   bx
+      not   cx
+
+      and   ax, bx
+      and   ax, cx
+      or    dx, ax
+
+      mov   ax, [FFF6]
+      not   ax
+      not   bx
+    
+      and   ax, bx
+      and   ax, cx
+      or    dx, ax
+
+      mov   ax, [FFF6]
+      not   cx
+      not   ax
+      not   bx
+
+      and   ax, bx
+      and   ax, cx
+      or    dx, ax
+
+      mov   [FFFE], dx
+
+      mov   dx, 0
+      not   ax
+      not   bx
+
+      and   ax, bx
+      or    dx, ax
+
+      mov   ax, [FFF6]
+      and   ax, cx
+      or    dx, ax
+    
+      and   bx, cx
+      or    dx, bx
+
+;now dx holds Cout of first column
+
+      mov   ax, [FFF4]
+      mov   bx, [FFF0]
+      mov   cx, dx
+      mov   dx, 0
+
+      and   ax, bx
+      and   ax, cx
+      mov   dx, ax
+
+      mov   ax, [FFF4]
+      not   bx
+      not   cx
+
+      and   ax, bx
+      and   ax, cx
+      or    dx, ax
+
+      mov   ax, [FFF4]
+      not   ax
+      not   bx
+    
+      and   ax, bx
+      and   ax, cx
+      or    dx, ax
+
+      mov   ax, [FFF4]
+      not   cx
+      not   ax
+      not   bx
+
+      and   ax, bx
+      and   ax, cx
+      or    dx, ax
+
+      mov   [FFFC], dx
+
+      mov   dx, 0
+      not   ax
+      not   bx
+
+      and   ax, bx
+      or    dx, ax
+
+      mov   ax, [FFF4]
+      and   ax, cx
+      or    dx, ax
+    
+      and   bx, cx
+      mov   [FFFA], bx
+      jmp   a
+
+
+
+
+
+
+
+
+
