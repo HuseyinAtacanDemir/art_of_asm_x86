@@ -1,0 +1,19 @@
+	get
+	mov	cx, ax
+	mov	bx, 1000
+	mov	ax,	0
+
+a:	cmp	cx, 0	
+	je	r
+	mov	dx, [bx]
+	cmp	ax, dx
+	jb	s
+b:	sub	cx, 1
+	add	bx, 2
+	jmp	a
+
+s:	mov	ax,	dx
+	jmp	b
+
+r:	put
+	halt
