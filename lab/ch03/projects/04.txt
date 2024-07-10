@@ -1,0 +1,42 @@
+;main program at address 0
+
+mov ax, 0101
+mov bx, 1000
+mov cx, 000A
+mov dx, 0012
+mov [111], dx
+jmp 100
+
+mov ax, 000F
+mov bx, 1014
+mov cx, 0006
+mov dx, 0024
+mov [111], dx 
+jmp 100
+ 
+mov ax, 000F
+mov bx, 1020
+mov cx, 000F
+mov dx, 0036
+mov [111], dx 
+jmp 100
+
+mov ax, 0003
+mov bx, 103E
+mov cx, 0001
+mov dx, 0048
+mov [111], dx
+jmp 100
+
+halt 
+
+
+;subroutine at address 100 
+
+a:	cmp	cx, 0
+	je	r
+	sub	cx, 1
+	mov	[bx], ax
+	add	bx, 0002
+	jmp	a
+r:	jmp	0

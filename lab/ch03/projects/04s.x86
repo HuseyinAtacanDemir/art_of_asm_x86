@@ -1,0 +1,7 @@
+a:	cmp	cx, 0
+	je	r
+	sub	cx, 1
+	mov	[bx], ax
+	add	bx, 0002
+	jmp	a
+r:	jmp	0
