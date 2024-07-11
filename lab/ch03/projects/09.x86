@@ -1,0 +1,57 @@
+	get
+	mov	[1000], ax
+	
+e:	mov	bx, 1002
+
+f:	mov	cx, 0001
+	mov	dx, [bx]
+
+g:	cmp cx, 0
+	je i
+
+	mov	ax, dx
+	and	ax, cx
+	cmp	ax, 0
+	je	a
+	mov	ax, 0001
+a:	mov	[fffe],	ax 
+	add	cx, cx
+
+	mov	ax, dx
+	and	ax, cx
+	cmp	ax, 0
+	je	b
+	mov	ax, 0001
+b:	mov	[fffc], ax
+	add	cx, cx
+
+	mov	ax, dx
+	and	ax, cx
+	cmp	ax, 0
+	je	c
+	mov	ax, 0001
+c:	mov	[fffa], ax
+	add	cx, cx
+
+	mov	ax, dx
+	and	ax, cx
+	cmp	ax, 0
+	je	d
+	mov	ax, 0001
+d:	mov	[fff8], ax
+	add	cx, cx
+
+	mov	ax, 0500
+h:	cmp	ax, 0
+	je	g
+	sub	ax, 1
+	jmp h
+
+i:	mov	ax, [1000]
+	add	ax, ax
+	add	bx, 2
+	mov	dx, bx
+	sub	dx, ax
+	cmp	dx, 1002
+	je e
+	jmp f

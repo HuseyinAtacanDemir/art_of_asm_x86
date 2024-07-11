@@ -1,0 +1,92 @@
+;put the number of bytes used for animation data into ax
+;the animation data format is as follows
+;consider the 4 leds as binary digits, led at mem loc FFF8
+;being the high order bit
+;record the "frames" of led animations 1 nibble at a time
+;starting from location 1002.
+;the program reads the animation frames starting from lower
+;bits to higher bits
+;to have a led light travel from right to left periodically
+;you'd need to enter into memory: 
+;1002: 21 
+;1003: 84 
+;and set the byte word to 0001 at location 1000
+;since the program reads animation data as words
+;the data needs to have a multiple of 16 bits
+;example animation data, loading bar, little endian
+;1000:	03 00
+;1002:	10 42
+;1004:	98 CA
+;1006:	ED FF
+
+;example animation data, two dots travelling from right to left, little endian
+;1000:	03 00
+;1002:	31 C6
+;1004:	08 31
+;1006:	C6 08
+
+;Example animation, dot pinging between left and right, little endian
+;1000:	02 00
+;1002:	11 42
+;1004:	88 24
+
+
+
+
+	get
+	mov	[1000], ax
+	
+e:	mov	bx, 1002
+
+f:	mov	cx, 0001
+	mov	dx, [bx]
+
+g:	cmp cx, 0
+	je i
+
+	mov	ax, dx
+	and	ax, cx
+	cmp	ax, 0
+	je	a
+	mov	ax, 0001
+a:	mov	[fffe],	ax 
+	add	cx, cx
+
+	mov	ax, dx
+	and	ax, cx
+	cmp	ax, 0
+	je	b
+	mov	ax, 0001
+b:	mov	[fffc], ax
+	add	cx, cx
+
+	mov	ax, dx
+	and	ax, cx
+	cmp	ax, 0
+	je	c
+	mov	ax, 0001
+c:	mov	[fffa], ax
+	add	cx, cx
+
+	mov	ax, dx
+	and	ax, cx
+	cmp	ax, 0
+	je	d
+	mov	ax, 0001
+d:	mov	[fff8], ax
+	add	cx, cx
+
+	mov	ax, 0500
+h:	cmp	ax, 0
+	je	g
+	sub	ax, 1
+	jmp h
+
+i:	mov	ax, [1000]
+	add	ax, ax
+	add	bx, 2
+	mov	dx, bx
+	sub	dx, ax
+	cmp	dx, 1002
+	je e
+	jmp f
