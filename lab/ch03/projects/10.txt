@@ -1,0 +1,41 @@
+;sorting arr of words from loc 1000 to 10FF inclusive
+;the x86 ISA only allows for bx as a mem location for store operations
+
+	mov	bx, 0FFE
+l1:	add	bx, 2
+	cmp	bx, 10FE
+	jae	p
+	
+	mov	cx, bx
+l2:	add	cx, 2
+	cmp	cx, 1100
+	jae	l1
+
+	mov	ax, [bx]
+	mov	dx, bx
+	mov	bx, cx
+	cmp	ax, [bx]
+	jbe	l4
+	
+	mov	[1102], cx
+	mov	cx, [bx]
+	mov	bx, dx
+	mov	[bx], cx
+	mov	bx, [1102]
+	mov[bx], ax
+	mov	cx, [1102]
+	mov	bx, dx
+	jmp	l2
+
+l4:	mov	bx, dx
+	jmp	l2
+
+p:	mov	bx, 0FFE
+l3:	add	bx, 2
+	cmp	bx, 1100
+	jae	h
+	mov	ax, [bx]
+	put
+	jmp	l3
+
+h:	halt	
