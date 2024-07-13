@@ -1,0 +1,263 @@
+1) What are the three components that make up Von Neumann Machines?
+CPU, Memory, I/O
+
+2) What is the purpose of:
+  a) The system bus
+    The system bus connects the varous components of a VNA machine
+  b) The address bus
+    The address bus let's the cpu specify what memory or i/o location it wishes to fetch
+  c) The data bus
+    The data bus, the size of which determines the size of the processor, carries the data 
+  between the cpu and memory and i/o devices.
+  d) The control bus
+    The control bus is tasked with carrying control bits, e.g. "is the cpu sending or receiving data" etc.
+  There are also byte enable lines on the control bus that allows the cpu to deal with smaller chunks of
+  data.
+    Furthermore, in the case of the 80x86 family, the main memory and the i/o devices have separate memory
+  spaces, however they are communicated with using the same address bus, of which the i/o uses only the LO
+  16 bits. The control bus controls whether a given address on the address bus is intended for an i/o device
+  or main memory.
+
+3) Which bus defines the "size" of the processor?
+  The data bus.
+
+4) Which bus controls how much memory you can have?
+    The size of the address bus determines the maximum number of addressable memory and I/O locations, or 
+  address space.
+
+5) Does the size of the data bus control the maximum value the CPU can process? Explain.
+    No, even with a data bus, say of a width of 16 bits, the CPU can deal with 32, 64 or however large of a
+  number you acn imagine. The size of the data bus, however, determines the maximum value that can be operated
+  on in a single instruction. One can create software solutions where the CPU of a certain size could in fact
+  deal with much larger values, albeit over the course of multiple instructions.
+
+6) What are the data bus sizes of:
+  a) 8088:          8 bits
+  b) 8086:          16 bits
+  c) 80286:         16 bits
+  d) 80386sx:       16 bits
+  e) 80386dx:       32 bits
+  f) 80486:         32 bits
+  g) 80586/Pentium: 64 bits
+
+7) What are the address bus sizes of the same set of processors?
+      Processor     | Address Bus Size  | Max Addressable Memory  | In English!
+  a) 8088:            20 bits                 1,048,576             1 Megabyte
+  b) 8086:            20 bits                 1,048,576             1 Megabyte
+  c) 80286:           24 bits                16,777,216             16 Megabytes
+  d) 80386sx:         24 bits                16,777,216             16 Megabytes 
+  e) 80386dx:         32 bits             4,294,976,296             4 Gigabytes
+  f) 80486:           32 bits             4,294,976,296             4 Gigabytes
+  g) 80586/Pentium:   32 bits             4,294,976,296             4 Gigabytes
+
+8) How many "banks" of memory do each of the above processors have?
+  a) 8088:          One bank 
+  b) 8086:          Two Banks
+  c) 80286:         Two Banks
+  d) 80386sx:       Two Banks
+  e) 80386dx:       Four Banks
+  f) 80486:         Four Banks
+  g) 80586/Pentium: Four/Eight banks?
+
+9) Explain how to store a word in byte addressable memory (that is, at what addresses). Explain how to store a double word.
+  Storing and Accessing words:
+      You can store a word at a even location and the LO byte and HO byte will be put in consecutive memory lcoations, whereby
+    the base memory location would point to the LO byte of the word.
+      On a single bank machine, these would take two memory operations, and only a single memory operation on a two bank machine.
+      If you were to out the word at an odd location, the LO byte would live in the odd location and the HO byte would live in
+    the next location. However, due to the way memory is accessed, these bytes would need to be swapped internally.
+      On a single bank machine, this operation would take two memory operations. On a two bank machine this would still take two
+    memory operations because only even addresses can be accessed directly. 
+  Storing and Accessing dwords:
+    Single Bank:
+      4 operations regardless of address.
+    Double bank:
+      2 operations for even addresses
+      3 operations for odd addresses
+    Quad banK:
+      1 operation for addresses multiple of 4
+      2 operations for even addresses that are not multiples of 4
+      2 operations for addresses that occur at addr mod 4 = 1 or 3
+  The mem addr that is pointed to should always have the LO byte
+
+10) How many memory operations will it take to read a word form the following addresses on the following processors?
+-------------------------------------------------------------------
+| Processor | 100 | 101 | 102 | 103 | 104 | 105 | 106 | 107 | 108 |
+|-----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+|    8088   |  2  |  2  |  2  |  2  |  2  |  2  |  2  |  2  |  2  |
+|-----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+|   80286   |  1  |  2  |  1  |  2  |  1  |  2  |  1  |  2  |  1  |
+|-----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+|   80386   |  1  |  1  |  1  |  2  |  1  |  1  |  1  |  2  |  1  |
+|-----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+|   80586   |  1  |  1  |  1  |  1  |  1  |  1  |  1  |  2  |  1  |
+-------------------------------------------------------------------
+
+11) Repeat the above for double words
+-------------------------------------------------------------------
+| Processor | 100 | 101 | 102 | 103 | 104 | 105 | 106 | 107 | 108 |
+|-----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+|    8088   |  4  |  4  |  4  |  4  |  4  |  4  |  4  |  4  |  4  |
+|-----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+|   80286   |  2  |  3  |  2  |  3  |  2  |  3  |  2  |  3  |  2  |
+|-----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+|   80386   |  1  |  2  |  2  |  2  |  1  |  2  |  2  |  2  |  1  |
+|-----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+|   80586   |  1  |  1  |  1  |  1  |  1  |  2  |  2  |  2  |  1  |
+-------------------------------------------------------------------
+
+12) Explain which addresses are best for byte, word, and doubleword variables on 8088, 80286, and 80386 processors?
+  8088:
+    byte:   any address
+    word:   any
+    dword:  any
+
+  80286:
+    byte:   any
+    word:   even
+    dword:  even
+
+  80386:
+    byte:   any
+    word:   even, multiple of 4, or mod 4 = 1
+    dword:  mod 4 = 0 
+
+13) How many different I/O locations can you address on the 80x86 chip? How many are typically available on a PC?
+  2^16 i/o locations.
+  Typical VGA has over 128,000, so designers map their i/o devices to regular memory sometimes.
+
+14) What is the purpose of a system clock?
+    System clock is an alternating electronic pulse that keeps all the components of the CPU synchronized.
+  Since all CPU operations aer synchorinzed around the clock, the CPU cannot perform tasks any faster than the clock.
+  However, many operations take multiple clock cycles to complete, so the CPU is not naively completing one instruction
+  per clock cycle.
+
+15) What is a clock cycle?
+    A clock cycle is the period of the system clock's signal modulation. The signal goes from 0 to 1 back to 0, and
+  one of those comprises a clock cycle.
+
+16) What is the relationship between the clock frequency and the clock cycle?
+    Clock frequency is the amount of times the clock alternates in a second.
+  One clock cycle's duration would be the inverse of that frequency.
+
+17) How many clock cycles are required for each of the following chips to read a byte from memory?
+  8088:   4 Cycles
+  8086:   4 Cycles
+  80486   1 Cycle
+
+18) What does the term "memory access time" mean?
+  Memory Access Time is the number of clock cycles it takes to access a memory location.
+  More precisely, the Memory Access Time is the amount of time it takes between the memory operation request and its completion.
+
+19) What is a wait state?
+    A wait state is the process by which the CPU inserts a no-op state for a number of cycles after the control units instructs 
+  the system to fetch/write a value from/to memory. The reason behind the need for the insertion of these wait states is due to
+  the fact that no matter how fast the CPU's internal clock may be, the bottleneck of memory read/write operations is
+  the speed at which the memory device can decode/read/write from/to memory. Therefore, if the CPU were to assume that
+  all the operations that happen inside the RAM to read/write a location would take 1 clock cycle, in the next instruction
+  CPU might change the values on the data bus/ address bus/control bus, which would corrupt the memory, because perhaps
+  the RAM was in the middle of still decoding the address from the previous instruction. Namely, CPU's and RAM chips have
+  different speeds at which they are rated, therefore the CPU needs to allow the RAM enough time to reliably and accurately
+  undertake the operation commanded by the CPU.
+
+20) If you are running an 80486 at the following clock speeds, how many wait states are required if you are using a 80ns RAM
+(assuming no other delays) ?
+    I take the "assuming no other delays" clarification to mean that we are not factoring the time taken for buffering and decoding
+  and assuming that as soon as the CPU puts an address and/or data on the address/data busses, the RAM chip starts working immediately:
+  20 MHz: 
+    freq:   20 MHz -> 20,000,000 1/sec 
+    period: 1/(20 MHz) = 1/(2 * 10^7) = 1/2 * 10^-7 = 0.5 * 10^-7 = 50 ns
+    80 ns > 50 ns
+    50 ns + 50 = 100 ns
+    80 ns < 100 ns
+    1 wait state is added
+
+  25 MHz:
+    freq:   25 MHz -> 25,000,000 1/sec
+    period: 1/(25 MHz) = 1/(25 * 10^6) = 1/25 * 10^-6 = 0.04 * 10^-6 = 40 ns
+    80 ns > 40 ns
+    40 ns + 40 ns = 80 ns
+    1 wait state (again, we assume no other delays)
+
+  33 MHz:
+    freq:   33 MHz -> 33,000,000 1/sec
+    period: 1/(33 MHz) = 1/(33 * 10^6) = 1/33 * 10^-6 =~ 0.0303 * 10^-6 = 30.3 ns
+    80 ns > 30.3 ns
+    30.3 ns + 30.3 ns = 60.6 ns < 80 ns
+    60.6 ns + 30.3 ns = 90.9 ns > 80 ns
+    2 wait states are inserted
+
+  50 MHz:
+    freq:   50 MHz -> 50,000,000 1/sec
+    period: 1/(50 MHz) = 1/(50 * 10^6) = 1/(5 * 10^7) = 1/5 * 10^-7 = 0.2 * 10^-7 = 20 ns
+    20 ns < 80 ns
+    20 ns * 4 = 80 ns = 80 ns
+    3 wait states are inserted
+  
+  100 MHz:
+    freq:   100 MHz -> 100,000,000 1/sec
+    period: 1/(100 MHz) = 1/(100 * 10^6) = 1/(1 * 10^8) = 1 * 10^-8 = 10 ns
+    10 ns * 8 = 80 ns
+    7 wait states are inserted
+
+21) If your CPU runs at 50 MHz, 20ns RAM probably won't be fast enough to operate at zero wait states. Explain why?
+    The math from above questions shows that the clock cycle of a 50 MHz CPU takes 20 ns, so it might be natural to think
+  that a 20 ns RAM would allow us to operate at 0 wait states, however, there are other steps that occur between a memory
+  operation request and the operations that take place within the RAM chip. These processes are the processes such as bufering
+  and decoding, which might themselves take a combined time of 10 ns, which would then require the 50 MHz processor to insert
+  one wait state.
+
+22) Since sub 10ns RAM is available, why aren't all systems zero wait state systems?
+    Probably, since the relase of this book, even faster RAM chips are available, but then again, it is always a compromise of 
+  price and performance. If you are only ever working on word documents and some occasional web browsing, why care about how
+  performant your system is? Why bother paying that much money for the top notch fastest RAM? That's why.
+
+23) Explain how the cache operates to save some wait states.
+    A typical program demonstrates over the course of its operation certain patterns of memory access; namely programs access the
+  same memory location range repeatedly, and access the same memory location repeatedly within a short period of time. These properties
+  of programs are called Spatial Locality of Reference and Temporal Locality of Reference respectively.
+    As an example the following piece of C code demonstrate both Spatial and Temporal locality:
+        for (int i = 0; i < 10: i++)
+          arr[i] = 0;
+    The program references the variable i multiple times in short periods of time -> temporal locality
+    The program continuously access the range of memory addresses that correspond to the array (assuming the arr is stored consecutively in memory) -> Spatial locality
+    Additionally, the instructions for the program itself if stored in consecutive memory locations and the computer accesses the same instructions
+  repeatedly in a short period of time -> Spatial and Temporal locality
+
+    Generally a program only consumes 10-20% of the memory allocated to it at any given time in the course of its execution.
+  Therefore we can store some subset of the consecutive memory locations in RAM to a really fast memory buffer within or close to the CPU
+  to speed up memory accesses.
+  The device/concept that allows us to do this is called the cache, and the process of using this idea is called caching.
+
+  Using the properties demonstrated by computer programs, we can spare slow visits to the RAM.
+
+24) What is the difference between Spatial and Temporal locality of reference?
+    Spatial locality of reference is the concept by which programs usually access consecutive memory locations/ neighboring memory locations
+    Temporal locality of reference is the concept by which programs usually access the same memory location repeatedly.
+
+25) Explain where temporal and spatial locality of reference occur in the following Pascal code:
+      while i < 10 do begin:
+            x := x * i;
+            i := i + 1;
+      end;
+    In the above Pascal Code excerpt, the variables x and i are accessed repeatedly in a short period of time -> temporal
+    Additionally, since there is a loop in the program, the same consecutive memory locations that hold the instructions
+  themselves will be accessed repeatedly in a short period of time -> both Spatial and Temporal locality
+
+26) How does cache memory improve the performance of a section of code exhibiting spatial locality of reference?
+    Since the cache is filled with consecutive memory locations from the RAM, if the program exhibits spatial locality of reference,
+  it is likely that most of the instructions if not all are present in the cache and the program might not need to actually visit the
+  RAM for a long time, sparing the CPU from wasting time with wait states.
+
+27) Under what circumstances is a cache not going to save you any wait states?
+    If a program is accessing random memory locations, since each memory access will result in a cache miss, and that the cache will be
+  refilled at each cache miss, the program will end up slower compared to if there were no cache at all.
+    Therefore it is important to pay heed to the memory access profile of the programs that we write.
+
+28) What is the effective (average) number of wait states the following systems will operate under?
+  a) 80% cache hit ratio, 10 Wait States for RAM, 0 WS for cache  
+  b) 90% cache hit ratio, 7 WS RAM, 0 WS for cache
+  c) 95% cache hit ratio. 10 WS RAM, 1 WS cache
+  d) 50% cache hit ratio, 2 WS RAM, 0 WS cache
+
+29)
