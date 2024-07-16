@@ -255,9 +255,87 @@ CPU, Memory, I/O
     Therefore it is important to pay heed to the memory access profile of the programs that we write.
 
 28) What is the effective (average) number of wait states the following systems will operate under?
-  a) 80% cache hit ratio, 10 Wait States for RAM, 0 WS for cache  
+  a) 80% cache hit ratio, 10 Wait States for RAM, 0 WS for cache 
+    [(80 * 0) + (20 * 10)] / 100 = 2 WS
+ 
   b) 90% cache hit ratio, 7 WS RAM, 0 WS for cache
+    [(90 * 0) + (10 * 7)] / 100 = 0.7 WS
+ 
   c) 95% cache hit ratio. 10 WS RAM, 1 WS cache
-  d) 50% cache hit ratio, 2 WS RAM, 0 WS cache
+    [(95 * 1) + (5 * 10)] / 100 = 145 / 100 = 1.45 WS
 
-29)
+  d) 50% cache hit ratio, 2 WS RAM, 0 WS cache
+    [(50 * 0) + (50 * 2)] / 100 = 100/100 = 1 WS
+
+29) What is the purpose of two level caching? What does it save?
+    Overall, by a multi level caching scheme we get better performance, it saves cache misses being too expensive.
+
+30) What is the effective number of wait states for the following systems?
+  a) 80% L1 0 WS, 95% L2 2 WS, 10 WS RAM
+    (.8 * 0) + .2 * ((.95 * 2) + (.5 * 10)) = 1.38 WS
+
+  b) 50% L1 0 WS, 98% L2 1 WS, 5 WS RAM
+    (.5 * 0) + .5 * ((.98 * 1) + (.02 * 10)) = 0.59 WS
+
+  c) 95% L1 1 WS, 98% L2 4 WS, 10 WS RAM
+    (.95 * 1) + .5 * ((.98 * 4) + (.02 * 10)) = 3.01 WS
+
+31) Explain the purpose of the Bus Interface Unit, Execution Unit, Control Unit:
+  Bus Interface Unit (BIU): The bus interface unit is responsible for controlling the address and data busses when
+    accessing main memory. If a cache is present on the CPU chip then the BIU is also responsible for accessing data
+    in the cache.
+  Execution Unit: The circuitry needed for eprforming the actual computation and logic operations necessary to run
+    programs. ALU FPU instruction decode execute, data manipulation, branching and control
+  Control Unit: fetches instructions from memory and sends them to EU/instruction decoding register, contains the
+    instruction pointer register which points to the next instruction, increments the IP after execution
+
+32) Why does it take more than one clock cycle to execute an instruction. Give some x86 examples
+    Instructions take more than one clock cycle because even the instruction itself is a wrapper/abstraction over
+  what really goes on in the CU ALU and the CPU as a whole. 
+  Firstly, the intruction byte needs to be fetched from memory,
+  the instruction pointer needs to be incremented,
+  the instruction byte needs to be decoded,
+  if need be, a 16 bit operand must be fetch from memory and the IP incremented again,
+  the address of the operand must be computed if needed (for the cases such as [bx+xxxx], indexed addressing),
+    after the address of the operand is computed, the value of the operand must be fetched,
+    and stored in the destination register.
+
+  All of these "steps" required in a mov instruction take time.
+  Overall most instructions take 5 to 20 cycles to complete.
+
+33) How does a prefetch queue save you time? Give some examples.
+    When the CPU is not using the BIU we can buffer opcodes and more instruction bytes into a queue while there is some other
+  computation going on in the CPU.
+34) How does a pipeline allow you to (seemingly) execute one instruction per clock cycle? Give an example
+
+35) What is a hazard?
+
+36) What happens on the 8486 when a hazard occurs?
+
+37) How can you eliminate the effects of a hazard?
+
+38) How does a jump (JMP/Jcc) instruction affect
+  a) the Prefetch queue
+  b) the Pipeline
+
+39) What is a pipeline stall?
+
+40) Besides the obvious benefit of reducing wait states, how can a cache improve the performance of a pipelined system?
+
+41) What is a Harvard Architecture Machine?
+
+42) What does a superscalar CPU do to speed up execution?
+
+43) What are the two main techniques you should use on a superscalar CPU to ensure your code runs as quickly as possible? 
+(Note: these are mechanical details, "Better Algorithms" doesn't count here)
+
+44) What is an interrupt? How does it improve system performance?
+
+45) What is polled I/O?
+
+46) What is the difference between memory-mapped and I/O mapped I/O?
+
+47) DMA is a special case of memory-mapped I/O. Explain.
+
+
+ 
