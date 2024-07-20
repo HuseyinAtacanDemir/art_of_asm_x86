@@ -303,11 +303,77 @@ CPU, Memory, I/O
   All of these "steps" required in a mov instruction take time.
   Overall most instructions take 5 to 20 cycles to complete.
 
+  add, sub, cmp, and, or instructions:
+  1) fetch instr from mem (1 cycle)
+  2) update ip to next byte (1 cycle)
+  3) decode instr (1 cycle)
+  4) if req, fetch const operand from mem
+    0 cyc for [bx]
+    1 cyc for indexed, direct, immediate(constant) if value following opcode is in even addr
+    2 cyc ^^ if const was in odd addr
+  5) if req, update ip to beyond the const (0 or 1 cyc)
+  6) compute addr of operand
+    0 cyc if register/immediate/direct
+    1 cyc if indirect
+    2 cyc if indexed
+  7) get value of operand send to ALU
+    0 cyc if immediate
+    1 cyc if register
+    2 cyc if word aligned mem op
+    3 cyc if non word aligned mem op
+  8) fetch first operand (a register) send to ALU
+    1 cyc
+  9) instruct ALU to add,sub,cmp, and, or the values
+    1 cyc
+  10) store result back into first reg operand
+
 33) How does a prefetch queue save you time? Give some examples.
     When the CPU is not using the BIU we can buffer opcodes and more instruction bytes into a queue while there is some other
   computation going on in the CPU.
-34) How does a pipeline allow you to (seemingly) execute one instruction per clock cycle? Give an example
+    When we have bytes in the pre-fetch queue, we can even process some of the buffered bytes depending on what parts of the CPU
+  are not being used at the moment, for example, while carrying out the actual ALU computation of an add instruction, we might be
+  decoding the opcode of the instr that comes after add, while decoding we could be fetching the instr or operand after that,
+  while incrementing IP we could be fetching, while sending data to mem we could be decoding, incrementing ip etc etc, overlap
+  decoding of the enxt instr with the last step of the last instr etc.
+    Given that we access memory in chunks of 2 bytes, a word, and that the CPU generally consumes less than 2 bytes of data
+  per clock cycle, any byte that the CPU need to fetch from emmory will be already siting the the pre-fetch queue.
+    Of course, if there are jumps the contents of the prefetch queue would be invalidated.
 
+  With a pre-fetch queue, on average the instructions take 5-8 cycles to process, down from 5-20 cycles. (except for jumps)
+  
+  Jumps incur a pre-fetch invalidation penalty to the CPU, only if the jump is made however, so while writing code with jumps
+  make sure to arrange the jumps so that most common cases fall through and uncommon cases jump to a different location.
+
+  Also since fetching a three byte instr takes longer, if a jump is neccessary it might be wise to write the code so that it jumps
+  to a single byte instruction.
+
+  Make sure to use shorter instructions because if the CPU consumes bytes in the queue faster than the BIU can fill up the queue,
+  we will end up hitting ram with a penalty.
+
+34) How does a pipeline allow you to (seemingly) execute one instruction per clock cycle? Give an example
+  Executing instr in parallel using the BIU and an Execution Unit is a special case of pipelining.
+
+  The idea of the pre-fetch queue was to overlap instr fetching,decoding, and execution one one another, meaning while one instr
+  is executing, the BIU can fetch and decode next instr.
+
+  With the addition of some more hardware, all operations can be executed in parallel.
+  
+  The steps necessary to do a generic operation:
+    fetch opcode
+    decode opcode & prefetch possible 16 bit operand
+    compute possible complex addresses
+    fetch source val from mem (if mem operand) & destination reg value (if applicable)
+    compute result
+    store result back in dest reg
+
+  A "mini" processor can be built with extra silicon to handle each of the above steps
+
+  A seperate mini circuitry can be made for each of the above steps in this "pipeline" thus making it possible to process all
+  of these steps in parallel.
+  
+
+  
+  
 35) What is a hazard?
 
 36) What happens on the 8486 when a hazard occurs?
