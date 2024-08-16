@@ -353,8 +353,7 @@ CPU, Memory, I/O
 34) How does a pipeline allow you to (seemingly) execute one instruction per clock cycle? Give an example
   Executing instr in parallel using the BIU and an Execution Unit is a special case of pipelining.
 
-  The idea of the pre-fetch queue was to overlap instr fetching,decoding, and execution one one another, meaning while one instr
-  is executing, the BIU can fetch and decode next instr.
+  The idea of the pre-fetch queue was to overlap instr fetching, decoding, and execution on one another, meaning while one instr is executing, the BIU can fetch and decode next instr.
 
   With the addition of some more hardware, all operations can be executed in parallel.
   
@@ -368,40 +367,61 @@ CPU, Memory, I/O
 
   A "mini" processor can be built with extra silicon to handle each of the above steps
 
-  A seperate mini circuitry can be made for each of the above steps in this "pipeline" thus making it possible to process all
-  of these steps in parallel.
+  A seperate mini circuitry can be made for each of the above steps in this "pipeline" thus making it possible to process all of these steps in parallel.
   
+  N-stage pipeline can execute n instructions in parallel usually.
 
-  
+  When different instructions need the bus at the same time, stalls can occur. (bus contention)
   
 35) What is a hazard?
+    A hazard (data hazard) is the incorrect results obtained by a pipelined cpu in the cases where instructions depend on the result of the immediately previous instruction. trying to execute mov bx, [1000] and mov ax, [bx] can incur a data hazard because by the time the value at mem loc 1000 is stored into bx, the load step for the nxt instruction is already has taken place and with the old value of bx.
+
+    More precisely, a data hazard occurs when the source operand of one instr was a dest operand of a prev instr.
 
 36) What happens on the 8486 when a hazard occurs?
+    CISC processors handle hazards automatically by delaying the pipeline when necessary. 
+    the 8486 would insert two delay cycles to the next instruction so that it waits before loading the value of the source reg of the next instruction.
 
 37) How can you eliminate the effects of a hazard?
+  By inserting other instructions in between the instructions that cause a hazard, we can eliminate the effects completely.
+  On a pipelined processor, the order of instr may dramatically affect the performance of a program. Thus it is necessary to always be on the lookout for potential hazards.
 
 38) How does a jump (JMP/Jcc) instruction affect
   a) the Prefetch queue
+      A jump would flush the contents of a cache and the cache would need to be refilled. until the cahce is filled, the mem access operations would take as slow as the limit of the actual memory hardware. As the cache fills again, mem access would speed up.
   b) the Pipeline
+      when a jump occurs, the whole pipeline needs to be flushed. Depending on the length of the pipeline, this may mean that the next instruction will complete in N clock cycles.
 
 39) What is a pipeline stall?
+    A pipeline stall occurs when the execution of parallel instructions within a pipeline create contention for a resource. Usually, the pipeline is stalled for the lower priority instructions and the resource is given to the top priority instruction and is allowed to move along the pipeline. For the lower priority instructions, this means "dead" clock cycles.
 
 40) Besides the obvious benefit of reducing wait states, how can a cache improve the performance of a pipelined system?
+    Besides reducing wait states, with the addition of multiple caches, we can eliminate pipeline stalls as well, and decouple the dependence on a free BIU of the prefetch queue to do its job properly.
 
 41) What is a Harvard Architecture Machine?
-
+    In order to make proper use of the prefetch queue, we need "dead" clock cycles where the CPU is not using the BIU. This was pretty straightforward in non-pipelined architectures. However, with the introduction of pipelines, the "dead" cycles where the CPU is not accessing memory were eliminated, thus leaving no time for the prefetch queue to actually fetch from memory. Thus the idea was born taht the instruction and data busses/memory should be seperated. 
+   It would be too expensive to create a true Harvard machine, so manufacturers use a von neumann arch outside the chip and a harvard architecrure inside the chip via the utilisiation of different caches for data and instructions.
+ 
 42) What does a superscalar CPU do to speed up execution?
+    A superscalar CPU implements multiple execution units to speed up execution.
+  It also allows for hazarding instructions to not completely stall the pipeine
 
 43) What are the two main techniques you should use on a superscalar CPU to ensure your code runs as quickly as possible? 
 (Note: these are mechanical details, "Better Algorithms" doesn't count here)
-
+    Short instructions. Knowing the composition of the CPU in order to know which instructions are fast and slow. WEven though the execution units are duplicated, they may not be completely "cloned": there might be multipl ALU's and floating point units etc.
+    
 44) What is an interrupt? How does it improve system performance?
+    An interrupt is an external hardware event that signals to the CPU that it needs to take care of whatever hardware event that initiated the interrupt. It improves the system performance by taking the "checking external hardware for data" responsibility out of the CPU and assigning the responsibility of "letting the CPU know that you are ready" to the hardware device itself.
+    The system also has an interrupt vector, that tells the CPU where to go to execute the special program for handling the interrupt (that program is called an ISR: interrupt service routine)
 
 45) What is polled I/O?
+    Polled IO is the case where the CPU constantly tests a port to see if data is available, it is inherently inefficient.    
 
 46) What is the difference between memory-mapped and I/O mapped I/O?
+    IO mapped IO uses special instructions and memory addresses for IO devices, whereas memory mapped IO does not use special instructions, only special memory addresses where the same memory instructions are made to work with getting and putting data from/on the io device.
 
 47) DMA is a special case of memory-mapped I/O. Explain.
+    DMA is a special case of memory-mapped I/O because it works the same way mem-map-io works. It uses the same instruction set as everything else and IO devices are represented as good old memory addresses. However, the difference in DMA is that, the DMA IO device has the ability to directly talk to the mem device without the need for the CPU thus CPU cycles are free to execute any other operatin (of course BIU contentions can occur).
 
 
  
