@@ -1,0 +1,406 @@
+Memory Layout and Access
+
+  Covered Topics:
+    Memory Addressing, 
+    Memory Organization, 
+    CPU addressing modes, 
+    Data Representation in Memory.
+
+    80x86 register sets, 
+    80x86 mem addr modes, 
+    80x86 composite data types.
+
+    gen purpose regs, 
+    segment regs, 
+    special purpose regs (some models).
+
+    Segmentation
+
+  80x86 CPUs: A Programmers view:
+    8088/8086, 80188/80186, 80286, 80386/80486/80586/Pentium.
+
+    Register Set for 80x86:
+      Like the hypothetical x86 processor from last chapter. 80x86 chips have a set of on-board registers. The register set for each processor of the 80x86 family is a superset of those in preceding CPUs.
+
+    Register Set for 8088, 8086, 80188. 80186:
+      General Purpose: 
+        Appear as operands of the arithmetic/logical and related instrs. (they are called general but they still do have their own special purposes)
+        
+        There are 8 16-bit gen-pur regs ax, bx, cx, dx, si, di, bp, and sp. Although you can use these interchangeably, many instr work more efficiently or absolutely require a specific reg from this group.
+        
+        The ax (accumulator) is where most arth and logic ops take place.
+        The bx (base) is used to hold indirect addresses (like bx on our x86 CPU)
+        The cx (count) counts things (loop or num of chars)
+        The dx (data) has two special purposes: holds overflow from certain arith ops, holds I/O addrs when accessing data on the 80x86 I/O bus.
+
+        The si and di (source index, destination index) can be used as pointers to indirectly access mem, Also will be used with 8086 string instrs when processing char strings.
+
+        The bp (base pointer) is similar to bx. Used to access parameters and local vars in a procedure.
+        The sp (stack pointer) has a very special purpose: it maintains the program stack. Normally not used for arith ops. Proper operation of most programs depends upon careful use of sp.
+        
+        There are also 8 8-bit regs: al, ah, bl, bh, cl, ch, dl, dh. These are not independent of the 16 bit registers but are simply the HO and LO 8 bits of the 16-bit regs. These are just shorthands for the specific bit range of the existing 16 bit registers, so any change in the 16-bit reg will affect the corresponding 8-bit reg vice versa.
+
+        si di bp sp are only 16 bits, no way of accessing lo or ho bits of these.
+
+        AX
+-------------------            ---------------
+|   AH   |   AL   |            |      SI     |
+-------------------            ---------------
+
+         BX
+-------------------            ---------------
+|   BH   |   BL   |            |      DI     |
+-------------------            ---------------
+
+        CX
+-------------------            ---------------
+|   CH   |   CL   |            |      BP     |
+-------------------            ---------------
+
+        DX
+-------------------            ---------------
+|   DH   |   DL   |            |      SP     |
+-------------------            ---------------
+
+
+      Segment: 
+        Used for accessing blocks of mem called segments. It is a bad idea to store actual data in these registers, expecially 80386 forwards.
+        
+        8086 has 4 special segment registers: cs ds es ss. These stand for Code Segment, Data Segment, Extra Segment, Stack Segment. They are all 16 bits wide. They deal with selecting blocks (segments) of main mem. A segment register points at the beginning of a segment in mem.
+
+        Segments of mem on 8086 can be no larger than 65536 bytes long. This infamous 64 k segment limit has disturbed programmers.
+
+        CS register (Code Segment) points at the segment containing the current executing machine instrs. If program is larger than 64K you change the value of cs
+
+        DS register (data segment) points at global vars of program. Same 64k limit and same idea of changing DS for larger data
+
+        ES register (extra segment) is just an extra. Used when it is impractical to change other seg regs to access a segment.
+
+        SS register (stack segment) points to the stack where important program state info, subroutine return addresses, procedure params, local vars etc are held. Usually SS is not modified cause many things depend on it.
+
+      Miscellaneous:
+          Two special registers: flags register, IP (instruction pointer). You do not access these registers the same way as others, CPU manipulates them directly.
+
+          Flags register:
+              This register is an eclectic collection of binary values, cannot be really said that it holds a 8-bit or 16-bit value, since the register is not used for reading as a whole, but each bit has a different meaning except for the unused bits. it is 16-bits wide but 8086 uses 9 of those for specific control/condition codes which helps determine the current state of the CPU.
+
+          Instruction Pointer:
+              Sameas the ip register in our x86 CPU. address of current executing instr. 16-bits, allowing to select any byte of current the 64K code segment.
+
+
+    Register set for 80286:
+      One additional programmer visible feature: protected mode ops.
+      
+      Protected mode for 80286 was poorly designed.
+      Protected mode is used for low-level systems-programs such as operating systems.
+
+      3 additional bits in the flags register compared to 8086: 
+        I/O privilege Level (2 bit value, bits 12/13)
+          00b for real mode
+        NT flag: nested task (one bit)
+          controls the operation of an interrupt return (iret)
+          usually 0 for real mode programs
+
+      5 additional registers used by an OS to support mem management and multiple processes:
+        Machine Status Word
+        Global Descriptor Table Register
+        Local Descriptor Table Register 
+        Interrupt Descriptor Table Register
+        Task Register
+
+    Register set for 80386/84086
+      80386 dramatically extended 8086 reg set. 80386 added new regs and extended existing regs on the 8086 platform. 80486 did not add new regs on top of 80386 but defined some bits in some regs thatwere undefined in 80386.
+
+      32 bit reg set. ax bx cx dx si di bp sp flags ip regsiters were made to be 32-bit
+      renamed: eax ebx ecx edx exi edi ebp esp eflags eip to differentiate.
+      
+      two new 16 bit seg regs: fs gs (all seg regs in 80386 are still 16 bits) (these segment regs have no mnemonics, they are just additions to the data segment ds es fs gs) allows to keep 6 different segments without reloading a seg reg.
+
+      32 bit eflags: 
+        bit 16: Debug Resume Flag RF used with debug registers
+        bit 17: Virtual Mode VM flag whether or not in virtual mode or protected mode
+        80486: bit 18: alignment check flag
+          along with Control Flag 0 CR0, Alignment Check flag forces a trap (program abort) when a program accesses non aligned data (word on odd addr or a dword at addr not multiple of four)
+
+      Control Registers:
+        CR0-CR3:
+          These regs extend the Machine Status Word (msw) of 80286.
+          on 80386/80486 these regs control functions sucha s paged mem, cache enable/disable/operation, protected mode operation, and more
+      
+      Debugging Regs:
+        8 debugging regs, used by debugging programs such as MS Codeview/TurboDebugger
+
+      Test Regs:
+        test regs test the proper operation of the processor during system power up.
+
+
+      To Application programmers, all the commonly used registers are as follows:
+
+        EAX                      ESI
+               AX
+---------------------    ---------------------
+|         | AH | AL |    |         |    SI   |                   
+---------------------    ---------------------
+
+        EBX                      EDI
+               BX
+---------------------    ---------------------
+|         | BH | BL |    |         |    DI   |                   
+---------------------    ---------------------
+
+        ECX                      EBP
+               CX
+---------------------    ---------------------
+|         | CH | CL |    |         |    BP   |                   
+---------------------    ---------------------
+
+        EDX                      ESP
+               DX
+---------------------    ---------------------
+|         | DH | DL |    |         |    SP   |                   
+---------------------    ---------------------
+
+                          
+---------- ----------    
+|   CS   | |   FS   |                       
+---------- ----------    
+                                EFLAGS
+---------- ----------    ---------------------
+|   DS   | |   GS   |    |         |  FLAGS  |                   
+---------- ----------    ---------------------
+
+---------- ----------    
+|   ES   | |   SS   |   
+---------- ----------  
+
+
+  80x86 Physical mem Organization:
+    Segmentation providesa powerful mechanism for memory management.
+    Segmentation allows programmers to aprtition their programs into independent modules.
+    Segmentation provides an easy way of writing OOP.
+    Segmentation allows processes to share data easily.
+    Segmentation also allows for extending the addressability of the processor.
+    Segmentation allowed 8086 to address 1MB of mem instead of the 64K limit.
+
+    Intel made 8086 with the assumption that it would be obsolete in 5 years, just like 8088 had been. They did not foresee the success of the IBM PC and the subsequent development of a plethora of programs for that platform. Thus they were stuck with 8086. But they had to find a way to increase the 1MB limit of 8086, so they came up with 80286 which could address up to 16MB of mem. However, all the software written for IBM PC was written in a way that could not take advantage of mem above 1MB. Turns out max addressable mem is not the main complaint of people, but the size of registers and addresses. 16-bit addresses, only allowed for 64k addressing, up to 1MB with the segmentation trick. However addresing above 64K at one time took effort, addressing more than 256 at a time took even more effort. Intel's 1976 implementation of segmentation was at fault, they fixed it with 80386, but MS-DOS forced people to use the '76 version of segmentation. Newer OS's do not suffer from the same problem.
+
+    Why have a 2D segmented addressing scheme instead of a 1D linear address:
+      Makes it easier to attach different memory needs of a process all together.
+      Makes it easier to protect processes from one another.
+      
+    In 80286 and later with the protected mode, the CPU can prevent one routine from modifying the vars of a different segment.
+
+    segment:offset
+    
+    8086-80286: these two values are 16 bit constants
+    80386-later: the offset is 16-32 bits
+
+    The suze of the offset limits the max size of a segment. On 8086-80286 with 16 bit offsets, the max segment size is 64K. 80386 forwards with 32 bits it is 4GB.
+
+    The segment is always 16 bits, thus all 80x86 processors allow for max 65,536 different segments for a program. Most programs have less than 16 segments.
+
+    The actual memory connected to the CPU is linear array of bytes of course.
+
+    There is an fn that converts the segment value to a physical address, The processor then adds the offset to get the actual address of data in mem. These addresses are refered to as segmented/logical addresses. The actual address of data in RAM is referred to as the physical address (the address that appears on the bus).
+
+    8088, 8086, 80188, 80186 multiply the segment value by 16 and add the offset value to it:
+      1000:1F00 --> 10000 + 1F00 = 11F00 physical address
+
+    80286 forwards: protected mode segments, instead of an fn, they now have a lookup table for mapping segments to addresses. Segment value is used as an index to this table. The lookup table includes the starting address of the segment among other things so the offset is added to this value. 
+
+    If your code depends on the multiply by 16 and add offset rule, it will not work on 80286 forwards, unless you're in V86(virtual 86) mode, but then you'd be limited to 1MB of mem.
+
+    Application code cannot modify the segment descriptor table, only protected mode OS code can.
+
+    Best application code never assumes anything about the locality of a segment and leave it up to the OS.
+
+  
+  Normalized Addresses on 80x86:
+
+    When operating in real mode, that is every logical address corresponds directly to a physical address, you end up in situations where you have multiple logical addr pointing to the same physical addr.
+
+    In order to solve this, we use normalized addresses.
+
+    Many programmers and high level languages use the following convention:
+      segment portion can be any 16 bit value
+      offset value must be a value in the range 0..0F.
+
+      1000:1F00 -> 11F0:0000 (normalized) -> 11F00 physical address
+
+    When operating in protected mode there is no correspondence between logical addr and physical addr.
+
+  Segment Regs on 80x86
+    Instruction set for 8086 was designed to be as few bytes as possible in 1976, since mem was expensive and smaller programs would be preferable. Intel wanted to avoid appending a 32 bit address (segment:offset) tot he end of instructions that reference mem. They were able to reduce this yo 16 bits (offset only) by making assumptions about which segments in mem an instruction can access.
+
+    8086-80286 have 4 segment regs: code segmet, data segment, extra segment, stack segment. 80386 and forward have two additional non-mneumically named fs and gs seg regs.
+    CS points to the segment containing currently running code. 
+    The CPU always fetches instructions from the addr given by cs:ip.
+    By default, CPU expects to access most vars in the data seg.
+    Certain vars and other ops occur in the stack seg.
+    When accessing data in these specific areas, no seg value is necessary.
+    To access data in one of the extra segments(es fs gs) only a single byte is neccessary to choose the appropriate seg reg. Only a few control transfer instructions allow you to specify a full 32 bit segmented (logical) address.
+
+    With only 4 seg regs, assuming 64K for seg, you can address a max of 256K, not the full megabyte promised. However you can change the seg reg under program control, so it is possible to address any byte by changing the seg reg val.
+
+    It takes a couple of instr to change seg reg vals on  80x86. These instrs take time and mem. Fortunately most consec mem axs occur within same seg. Hence loading new seg reg isn't done often.
+
+  The 80x86 Addressing Modes
+
+    The 80386 generalized the mem addr modes. Whereas 8086 only allowed BX or BP as base regs, and SI or DI as index regs, 80386 lets u use almost any gen purp 32 bit reg as base or index.
+    Further, 80386 introduced new SCALED INDEX addr mode that simplify accessing elems of arrs. Beyond the increase to 32 bits, these addr modes are probs biggest imprvmnt of 80386.
+
+    Register Indirect Addressing Modes:
+      80386 -> any 32 bit reg can be used for reg indirect addr mode, [eax] [ebx] [ecx] [edx] [esi] [edi] all provide offsets by default into the data segment, [ebp] [esp] provide offsets into the stack segment.
+    
+      While running in 16 bit real mode on the 80386, offsets in these 32 bit regs must still be in range 0..0FFFh. You cannot use vals larger than this to axs more than 64K in a seg. (unless in protected mode). You must use the 32 bit names (cannot use the 16 bit names of these regs)
+
+            mov   al, [eax]     ;Uses DS by def
+            mov   al, [ebx]     //
+            mov   al, [ecx]     //  
+            mov   al, [edx]     //
+            mov   al, [esi]     //
+            mov   al, [edi]     //
+            mov   al, [ebp]     ;Uses SS by def
+            mov   al, [esp]     ;Uses SS by def
+
+
+    Indexed, Base/Indexed, Base/Indexed/Disp addr mods on 80386:
+      
+      Indexed mode (register indirect + displacement) allows mixing 32 bit reg with a const.
+      Bse/Indexed mode allows pairing two 32 bit regs
+      Base/Indexed?disp mode allows mixing a const and two regs to form the effective addr.
+
+      The effective addrs produced must be 16 bits long in real mode.
+
+      On 80386 terms BASE REG and INDEX REG take on a different meaning. When combining two 32-bit regs in an addressing mdoe, the first reg is the BASE and the second is the INDEX. This is the case regardless of the register names.
+
+      NOTE: 80386 allows you to use the SAME REG as both BASE and INDEX, useful in some occasions.
+        
+        Indexed Examples:
+          regular indexed addressing types:
+            mov   al, disp[eax]     ;Indexed addressing modes:
+            mov   al, [ebx+disp]
+            mov   al, [ecx][disp]
+            mov   al, disp[edx]
+            mov   al, disp[esi]
+            mov   al, disp[edi]
+            mov   al, disp[ebp]     ;Uses SS by def
+            mov   al, disp[esp]     ;Uses SS by def
+
+        Base/Indexed Examples:
+          the first reg in the second operand is the base reg, the second is the index reg.
+          If the base reg is ESP or EBP the effective addr is relative to the stack seg
+          Otherwise the effective addr is relative to the data seg.
+          CHOICE FOR THE INDEX REG DOES NOT AFFECT DEFAULT SEGMENT
+            mov   al, [eax][ebx]    ;Base+Indexed addr modes
+            mov   al, [ebx+ebx]
+            mov   al, [ecx][edx]
+            mov   al, [edx][ebp]    ;Uses DS by default
+            mov   al, [esi][edi]
+            mov   al, [edi][esi]
+            mov   al, [ebp+ebx]     ;Uses SS by default
+            mov   al, [esp][ecx]    ;Uses SS by def   
+
+        Base/Index/Disp Examples:
+          Naturally you can add a displacement to the above addr modes to produce the base+indexed+displacement addr mode.
+            mov   al, disp[eax][ebx]
+            mov   al, disp[ebx+ebx]
+            mov   al, [ecx+edx+disp]
+            mov   al, disp[edx+ebp]   ;Uses DS by def
+            mov   al, [esi][edi][disp]
+            mov   al, [edi][disp][esi]
+            mov   al, disp[ebp+ebx]   ;Uses SS by def
+            mov   al, [esp+ecx][disp] ;Uses SS by def
+
+        THE ONLY RESTRICTION IS TO NOT USE ESP AS AN INDEX REG
+        
+        When using the base/indexed base/indexed/displ addr modes on the 80386 without a scaling option,the first reg in the addressing mode is the base and second is the index.
+        This is important because default segment is surmised from the base pointer.
+        If the scaled index operator is used on a reg (reg*n) that reg is always taken to be the index reg regardless of where it appears in the addr mode.
+          [ebx][ebp]      ;DS
+          [ebp][ebx]      ;SS
+          [ebp*1][ebx]    ;DS
+          [ebx][ebp*1]    ;DS
+          [ebp][ebx*1]    ;SS
+          [ebx*1][ebp]    ;SS
+          es:[ebx][ebp*1] ;ES because es is selected explicitly
+
+
+  THE 80x86 MOV INSTRUCTION
+    Like the hypothetical x86, the mov instr is simple:
+      mov DEST, SOURCE
+    MOV makes a copy of source and stores it into DEST. It does not affect the original contents of Source but overwrites the prev val in DEST.
+
+    80386 is called CISC for a reason and the encoding of the MOV inst is really complicated. 
+    The mnemonic MOV describes over a dozed different instructions on the 83086. The most commonly used form of the MOV inst has the following bin encoding:
+         opcode             Addr Mode                     displacement
+    -----------------  --------------------   ------------------------------------
+    |1|0|0|0|1|0|d|w|  |m|m|r|r|r|rm|rm|rm|   |x|x|x|x|x|x|x|x|  |x|x|x|x|x|x|x|x|
+    -----------------  --------------------   ------------------------------------
+
+    Bits 0-1 of the opcode define the Width(w)(8,16,32 bits) and the direction(d) of transfer.
+    Following the opcode byte, is the addressing mode byte, called "mod-reg-r/m". This byte chooses which of the 256 diff possible operand combinations the generic mov instruction allows.
+      mov   reg, mem
+      mov   mem, reg
+      mov   reg, reg
+
+    One of the operands is always a gen purp reg, the reg(r) field of mod/reg/rm byte determines that reg.
+    The d(direction) bit in opcode determines whether inst stores data into reg(d=0) or into mem(d=1)
+    The bits in reg field let you select one of 8 different regs. 8086 supports 8 eight-bit regs and 8 16-bit gen purp regs. 80386 also supports 8 32-bit gen purp regs. The CPU decodes the meaning of reg field as follows:
+    -------------------------------------------------------------
+    |   reg   |   w=0   |   16-b mode w=1   |   32-b mode w=1   |
+    -------------------------------------------------------------
+    |   000   |   AL    |   AX              |   EAX             |
+    -------------------------------------------------------------
+    |   001   |   CL    |   CX              |   ECX             |
+    -------------------------------------------------------------
+    |   010   |   DL    |   DX              |   EDX             |
+    -------------------------------------------------------------
+    |   011   |   BL    |   BX              |   EBX             |
+    -------------------------------------------------------------
+    |   100   |   AH    |   SP              |   ESP             |
+    -------------------------------------------------------------
+    |   101   |   CH    |   BP              |   EBP             |
+    -------------------------------------------------------------
+    |   110   |   DH    |   SI              |   ESI             |
+    -------------------------------------------------------------
+    |   111   |   BH    |   DI              |   EDI             |
+    -------------------------------------------------------------
+    To differentiate between 16 and 32 bit regs, 80386 and later processors use a special opcode prefiz byte before the instructions using 32-bit registers. Othrewise encodings are same for both types of instructions.
+    
+    The r/m field in conjunction with the mod field, chooses the addressing mode. The mod field encoding is as follows:
+    
+    MOD         Meaning
+    00          The RM field denotes a reg indirect mem addr mode or a base/idx addr mode unless rm                 field contains 110. if MOD=00 and rm=110 the mode and rm fields denote a displacemen                t only (direct) addressing
+    
+    01          The rm field denotes an indexed or base/indexed/disp addr mode. There is an 8 bit                   signed disp following the mod/reg/rm byte
+    
+    10          The rm field denotes an indexed or base/idx/disp addr mode. There is a 16 bit signed                disp (in 16 bit mode) or a 32 bit disp (in 32-b mode) dollowing the mod-reg-rm byte
+    
+    11          The RM field denotes a register and uses the same encoding as the reg field
+
+
+    The mod field chooses between a reg-to-reg move and a reg-to/from-mem move. It also chooses size of disp (0-1-2-4 bytes). If mod 00 then you have addr mode w/o disp (reg indirect, base/idx), except for the special case mod=00 r/m=110: this corresponds to the [bp] addr mode. 8086 uses this encoding for the disp only addr mode, meaning there isnt a true [bp] addr mode on 8086.
+
+    to understand why u can use [bp] addr mode in your programs, look at mod=01 mod=10 in the above table. these correspond to the disp[reg] disp[reg][reg] modes. if you say "that's not the same as [bp]" look at the following:
+          mov   al, 0[bx]
+          mov   ah, 0[bp]
+          mov   0[si], al
+          mov   0[di], ah
+
+    These statements using the idx addr mode, perform the same ops as their reg indirect counterparts, but one byte longer (mod01) or two bytes longer (mod10). SO they run slower.
+    The fact that 8086 ISA provides 2 or more ways of doing the same thing appears throughout the ISA. MASM generally picks the best from of the inst automatically.
+
+    If MOD is not 11b, the r/m field encodes as such:
+
+    R/M     ADDR mode (assumong mod 00 01 10)
+    000     [bx+si]   or DISP[bx][si] (depends on mod)
+    001     [bx+di]   or DISP[bx+di] //
+    010     [bp+si]   or DISP[bp+si] //
+    011     [bp+di]   or DISP[bp+di] //
+    100     [SI]      or DISP[SI]    //
+    101     [DI]      or DISP[di]    //
+    110     DISP only or DISP[bp]    //
+    111     [BX]      or DISP[bx]    //
+
+    addr modes with bp use ss, all other use ds
