@@ -163,3 +163,22 @@ zzzzzzseg	ends
 ; 0001
 ; 0000
 ; D:\>
+
+
+; Program listing of the section that I wrote as seen on the CodeViewer debugger
+------------------------------------------
+addr     |encoded    |instr    |operands |
+------------------------------------------
+2146:008C E871FF			CALL  		0000
+2146:008F 8BD8			  MOV   		BX, AX
+2146:0091 E86CFF			CALL  		0000
+2146:0094 03C3			  ADD   		AX, BX
+2146:0096 E8DCFF			CALL  		0075
+2146:0099 48			    DEC   		AX
+2146:009A 83F800			CMP   		AX, 00
+2146:009D 77F7			  JA    		0096
+2146:009F E8D3FF			CALL  		0075
+
+The addresses in the CV program listing are not linear as was in the simx86 program. Instead we have a segment and offset sections. Also, whenever we used an address in the x86 for calling a subroutine we would actually see that subroutine in the encoded part of a 3 byte instruction, here, we do not see the actual addr in the encoded version of the instr. I presume this is because the encoded version includes the actual addr (or the relevant offset from the start of the code segment), and the decoded version just includes the addr relative to the rest of the code.. but I am not sure. maybe the encoded version includes a physical address? I don't think that is the case though.
+
+When compiled with the /Zi option, the CodeView source-code window gives a detailed view of the source code, includiong the comments, and one can jump through the code as seen in the .asm file. Even though the compilation provides a much larger file, the debugging experience feels similar to the modern IDE experience
