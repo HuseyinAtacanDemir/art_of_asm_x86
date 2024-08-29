@@ -36,7 +36,7 @@ sseg		ends
 
 dseg		segment para public 'data'
 DataMemory	byte	65520 dup (?)
-dsegs		ends
+dseg		ends
 
 
 cseg		segment	para public 'code'

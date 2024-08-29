@@ -40,7 +40,7 @@ DataMemory	byte	65520 dup (?)
 ORG 1000h
 dw 1234h, 13h, 100h, 4321h, 5555h, 1h, 54h, 1463h, 10h, 76h
  
-dsegs		ends
+dseg		ends
 
 
 cseg		segment	para public 'code'
