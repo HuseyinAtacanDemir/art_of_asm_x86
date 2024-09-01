@@ -1,32 +1,3 @@
-
-; X86.ASM
-;
-; This is a special version of SHELL.ASM that includes macros for the x86 GET and PUT
-; instructions.  It allows you to write x86 style programs for the 80x86.
-;
-; There are a few caveats.  
-;
-; First, you cannot use the HALT, BRK, or IRET instructions.
-; BRK does not exist, HALT and IRET do not work the same way as they do on the x86
-; hypothetical processors.
-;
-; Second, the memory-mapped I/O devices are not present (no switches, no LEDs).
-;
-; Third, use operands of the form "DS:[xxxx]" for the direct addressing mode.
-; Without the "DS:" prefix, the instruction will not work the same way as the
-; x86 instruction.
-;
-; Fourth, unlike the x86, this program uses separate segments for the code and
-; data.  You cannot do self-modifying code like you did on the x86 assignments.
-;
-; Fifth, MASM lets you use labels that are just like the x86 labels with one exception:
-; "C" is a reserved word in MASM so you cannot create a program label named "C".  MASM
-; returns some bizarre error if you do.
-;
-; Sixth, you can use the x86 registers and addressing modes as well as the 80x86
-; registers and addressing modes (8086 only). 
-
-
 		include 	stdlib.a
 		includelib	stdlib.lib
 
@@ -41,9 +12,6 @@ dseg		ends
 
 cseg		segment	para public 'code'
 		assume	cs:cseg, ds:cseg
-
-
-; The following assembly language procedure simulates the x86 GET instruction.
 
 get		textequ	<call Gethex>
 GetHex		proc	near
@@ -73,9 +41,6 @@ GoodHex:	AtoH
 		ret
 GetHex		endp
 
-	
-
-; The following assembly language procedure simulates the x86 PUT instruction.
 
 put		textequ	<call PutHex>
 PutHex		proc	near
@@ -85,9 +50,6 @@ PutHex		proc	near
 PutHex		endp
 
 
-
-; This is where the main program goes.
-
 Main		proc
 		mov	ax, dseg
 		mov	ds, ax
@@ -96,7 +58,7 @@ Main		proc
 
 
 ;*****************************************************************************************
-; Insertion sort for 128 values starting at DS:1000h 
+; Storing values to DS:3000h form 0 to 07FFh and summing the first 512 words
 ;*****************************************************************************************
 
     xor ax, ax
@@ -114,15 +76,14 @@ l:
     mov ds:[1000h], dx
     mov bx, ds:[1000h]
 
-    xor cx, cx
+    xor si, si
     xor ax, ax
 
-m:  add bx, cx
-    mov dx, ds:[bx]
+m:  mov dx, ds:[bx + si]
     add ax, dx
-    inc cx
-    inc cx
-    cmp cx, 200h
+    inc si
+    inc si
+    cmp si, 402h
     jl  m
     
     put    
