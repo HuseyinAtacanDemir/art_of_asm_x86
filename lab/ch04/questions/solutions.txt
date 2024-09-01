@@ -1,0 +1,125 @@
+1) Although the 80x86 processors always use segmented addresses, the isntruction encodings for instructions like "mov ax, I" only have a 16 bit offset encoded into the opcode. Explain.
+  It is because the segment is stored in the segment registers such as SS DS CS etc. The opcode only ever needs the offset into that segment, which is itself 16 bits wide.
+
+2) Segmented addressing is best described as a two dimensional addressing scheme. Explain.
+  In a segmented addressing scheme, each address is comprised of a segment and a offset value. One can imagine the segment as the X coordinate and the offset as the y coordiante of a memory location. Therefore, even though the memory itself is linear as far as the ram is concerned, one can address it as if it was a "plane" of values this way.
+
+3) Convert the following logical addresses to physical addresses. Assume all values are hex and teal mode operation on the 80x86:
+  a) 1000:1000
+    1000h X 16 + 1000h = 11000h
+  b) 1234:5678
+    1234h X 16 + 5678h = 179B8h
+  c) 0:1000
+    0h X 16 + 1000h = 1000h
+  d) 100:9000
+    100h X 16 + 9000h = A000h
+  e) FF00:1000
+    FF00h X 16 + 1000h = 100000h
+  f) 800:8000
+    800h X 16 + 8000h = 10000h
+  g) 8000:800
+    8000h X 16 + 800h = 80800h
+  h) 234:9843
+    234h X 16 + 9843h = BB83h
+  i) 1111:FFFF
+    1111h X 16 + FFFFh = 2110Fh
+  j) FFFF:10
+    FFFFh X 16 + 10h = 100000h
+
+4) Provide normalized forms of the logical addresses above
+  a) 1000:1000
+    1000h X 16 + 1000h = 11000h
+    Normalized: 1100:0000
+
+  b) 1234:5678
+    1234h X 16 + 5678h = 179B8h
+    Normalized 179B:0008h
+
+  c) 0:1000
+    0h X 16 + 1000h = 1000h
+    Normalized 1000:0000
+
+  d) 100:9000
+    100h X 16 + 9000h = A000h
+    Normalized: A000:0000
+
+  e) FF00:1000
+    FF00h X 16 + 1000h = 100000h
+    Normalized 10000:0000
+
+  f) 800:8000
+    800h X 16 + 8000h = 10000h
+    Normalized 1000:0000
+
+  g) 8000:800
+    8000h X 16 + 800h = 80800h
+    Normalized 8080:0000
+
+  h) 234:9843
+    234h X 16 + 9843h = BB83h
+    Normalized 0BB8:0003
+
+  i) 1111:FFFF
+    1111h X 16 + FFFFh = 2110Fh
+    Normalized 21100:000F
+
+  j) FFFF:10
+    FFFFh X 16 + 10h = 100000h
+    Normalized 10000:0000
+
+5) List all 8086 mem addr modes
+
+6) List all 80386 and later addr modes that are not available on 8086
+
+7) Besides mem addr modes, what are the other two major addr modes on 8086?
+
+8) Describe a common use for each of the following addr modes:
+
+9) Given the bit pattern of the generic MOV explain why the 80x86 does not support a mem to mem move op?
+
+10) Which of the following mov instrs are not handled by the generic mov opcode? Explain
+  a) mov ax, bx
+  b) mov ax, 1234
+  c) mov ax, I
+  d) mov ax, [bx]
+  e) mov ax, ds
+  f) mov [bx], 2
+
+11) Assume the var I is at offset 20h int he data seg. Provide bin encodings for the above instructions:
+  a) mov ax, bx
+  b) mov ax, 1234
+  c) mov ax, I
+  d) mov ax, [bx]
+  e) mov ax, ds
+  f) mov [bx], 2
+
+12) What determines if the R/M field specifies a reg or a mem operand?
+
+13) What field inthe REG-MODE-R/M byte determines the size of the disp following an instr? What disp sizes fors 8086 support?
+
+14) Why doesn't the displacement only addr mode support multiple displacement sizes?
+
+15) Why would oyu not want to interchange the two instructions "mov ax, [bx]" and "mov ax, [ebx]" ?
+
+16) Certain 80x86 instructions take several forms. For example, there are two different versions of the MOV instruction that load a register with an immediate value. Explain why the designers incorporated this redundancy into the instruction set.
+
+17) Why isn't there a true [bp] addressing mode?
+
+18) List all 80x86 8-bit regs
+
+19) List all 80x86 gen purp 16-bit regs
+
+20) List all 80x86 seg regs (those available on all processors)
+
+21) Describe the "special purposes" of each gen purp regs.
+
+22) List all the 80386/486/586 32 bit gen purp regs
+
+23) What is the relationship between the 9, 16, 32 bit gen purp regs on the 80386?
+
+24) What values appear in the 80386 flags reg? the 80286 flags reg?
+
+25) Which flags are the condition codes?
+
+26) Which extra segment regs appear on the 80386 but not on earlier processors:
+  FS GS
